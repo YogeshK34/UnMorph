@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/* ---------------------------------------------------------------------------
+ * UnMorph design tokens — sourced from the brand moodboard.
+ * ------------------------------------------------------------------------- */
+@theme {
+  --color-brand-cyan: #06d6ff;
+  --color-brand-aqua: #00b3e6;
+  --color-brand-teal: #0e7490;
+  --color-brand-deep: #0b3a4a;
+
+  --color-ink: #111827;
+  --color-ink-soft: #1f2937;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-canvas: #f8fafc;
+
+  /* Verdict colours (validated for CVD separation — see dashboard chart). */
+  --color-verdict-authentic: #0891b2;
+  --color-verdict-unregistered: #f59e0b;
+  --color-verdict-tampered: #e11d48;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-glass:
+    0 1px 0 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(15 23 42 / 0.04),
+    0 12px 32px -12px rgb(15 23 42 / 0.12);
+  --shadow-float:
+    0 1px 1px rgb(15 23 42 / 0.04), 0 8px 24px -6px rgb(15 23 42 / 0.12),
+    0 32px 64px -24px rgb(14 116 144 / 0.25);
+  --shadow-island:
+    0 1px 0 0 rgb(255 255 255 / 0.08) inset, 0 10px 30px -10px rgb(2 6 23 / 0.45),
+    0 2px 6px rgb(2 6 23 / 0.2);
+
+  --animate-scan: scan 3.2s var(--ease-out-quint) infinite;
+  --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-shimmer: shimmer 2.8s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee-y: marquee-y 22s linear infinite;
+  --animate-dash: dash 2.4s linear infinite;
+
+  @keyframes marquee-y {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -50%, 0);
+    }
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -40;
+    }
+  }
+
+  @keyframes scan {
+    0% {
+      transform: translateY(-10%);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(1000%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.7;
+    }
+    80%,
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -10px, 0);
+    }
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-feature-settings:
+      "cv11" 1,
+      "ss01" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-balance;
+  }
+
+  ::selection {
+    background: rgb(6 214 255 / 0.25);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-aqua);
+    outline-offset: 3px;
+  }
+
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Utilities
+ * ------------------------------------------------------------------------- */
+@utility text-gradient-brand {
+  background-image: linear-gradient(100deg, #0e7490 0%, #00b3e6 45%, #06d6ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(15 23 42 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(15 23 42 / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility bg-grid-dark {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@utility mask-fade-y {
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+}
+
+@utility mask-radial {
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+}
+
+@utility glass {
+  background: rgb(255 255 255 / 0.72);
+  border: 1px solid rgb(255 255 255 / 0.9);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+
+@utility shimmer-text {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-muted) 0%,
+    var(--color-ink) 40%,
+    var(--color-muted) 60%,
+    var(--color-muted) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
