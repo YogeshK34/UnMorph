@@ -179,7 +179,7 @@ export function VerifyPanel({
     <div className="rounded-3xl border border-line/80 bg-white p-5 sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-display text-[17px] font-bold tracking-tight text-ink">
+          <h2 className="font-display text-[17px] font-medium tracking-tight text-ink">
             Verify an image
           </h2>
           <p className="mt-0.5 text-[13px] text-muted">

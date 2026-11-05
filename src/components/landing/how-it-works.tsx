@@ -110,7 +110,7 @@ export function HowItWorks() {
                     <p className="text-[12px] font-semibold tracking-[0.18em] text-brand-teal uppercase">
                       {step.kicker}
                     </p>
-                    <h3 className="mt-3 font-display text-[1.85rem] leading-tight font-bold tracking-[-0.03em] text-ink">
+                    <h3 className="mt-3 font-display text-[1.85rem] leading-tight font-medium tracking-[-0.03em] text-ink">
                       {step.title}
                     </h3>
                     <p className="mt-4 leading-relaxed text-muted">{step.body}</p>
@@ -275,7 +275,7 @@ function AnchorVisual() {
             >
               <Icon className={cn("size-5", layer.accent)} />
               <div>
-                <p className="font-display text-[15px] font-bold">{layer.name}</p>
+                <p className="font-display text-[15px] font-medium">{layer.name}</p>
                 <p className="mt-0.5 font-mono text-[11px] opacity-60">{layer.detail}</p>
               </div>
             </motion.div>
@@ -350,7 +350,7 @@ function VerifyVisual() {
           </span>
           <div>
             <p className="text-[12px] text-muted">Copy A</p>
-            <p className="font-display text-[15px] font-bold text-ink">Authentic · 99.4%</p>
+            <p className="font-display text-[15px] font-medium text-ink">Authentic · 99.4%</p>
           </div>
         </motion.div>
         <motion.div
@@ -364,7 +364,7 @@ function VerifyVisual() {
           </span>
           <div>
             <p className="text-[12px] text-muted">Copy B</p>
-            <p className="font-display text-[15px] font-bold text-ink">Tampered · 2 regions</p>
+            <p className="font-display text-[15px] font-medium text-ink">Tampered · 2 regions</p>
           </div>
         </motion.div>
       </div>

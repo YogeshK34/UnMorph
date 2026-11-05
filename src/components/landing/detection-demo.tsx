@@ -171,14 +171,14 @@ export function DetectionDemo() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[12px] font-medium text-muted">Verdict</p>
-                  <p className="mt-1 flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-ink">
+                  <p className="mt-1 flex items-center gap-2 font-display text-2xl font-medium tracking-tight text-ink">
                     <ShieldX className="size-6 text-verdict-tampered" />
                     Tampered
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-[12px] font-medium text-muted">Confidence</p>
-                  <p className="mt-1 font-display text-2xl font-bold tracking-tight text-ink">
+                  <p className="mt-1 font-display text-2xl font-medium tracking-tight text-ink">
                     96.8%
                   </p>
                 </div>
@@ -213,7 +213,7 @@ export function DetectionDemo() {
                       key={r.id}
                       className="flex items-center gap-3 rounded-xl bg-canvas px-3 py-2.5 text-[13px]"
                     >
-                      <span className="grid size-6 place-items-center rounded-md bg-verdict-tampered text-[11px] font-bold text-white">
+                      <span className="grid size-6 place-items-center rounded-md bg-verdict-tampered text-[11px] font-medium text-white">
                         {r.id}
                       </span>
                       <span className="flex-1 text-ink/85">{r.label}</span>

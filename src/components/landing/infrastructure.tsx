@@ -123,7 +123,7 @@ function CardHeader({
       </p>
       <h3
         className={cn(
-          "mt-4 font-display text-[1.4rem] leading-tight font-bold tracking-[-0.025em]",
+          "mt-4 font-display text-[1.4rem] leading-tight font-medium tracking-[-0.025em]",
           dark ? "text-white" : "text-ink",
         )}
       >

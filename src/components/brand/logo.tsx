@@ -47,7 +47,7 @@ export function Logo({ href = "/", size = 28, tone = "dark", className, priority
       />
       <span
         className={cn(
-          "font-display text-[1.05rem] font-bold tracking-[-0.02em]",
+          "font-display text-[1.05rem] font-medium tracking-[-0.02em]",
           tone === "dark" ? "text-ink" : "text-white",
         )}
       >

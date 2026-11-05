@@ -29,7 +29,7 @@ export function InfraStrip() {
                 <Icon className="size-5" strokeWidth={1.8} />
               </span>
               <span>
-                <span className="block font-display text-lg font-bold tracking-tight text-ink">
+                <span className="block font-display text-lg font-medium tracking-tight text-ink">
                   {name}
                 </span>
                 <span className="block text-[13px] leading-snug text-muted">{role}</span>

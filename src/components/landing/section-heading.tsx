@@ -37,7 +37,7 @@ export function SectionHeading({
       </Reveal>
       <h2
         className={cn(
-          "mt-5 font-display text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.04] font-bold tracking-[-0.04em]",
+          "mt-5 font-display text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.04] font-medium tracking-[-0.04em]",
           tone === "light" ? "text-ink" : "text-white",
         )}
       >

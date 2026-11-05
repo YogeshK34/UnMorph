@@ -39,7 +39,7 @@ export function NotFoundView() {
         transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
         className="mt-6 max-w-xl text-center"
       >
-        <h1 className="font-display text-[clamp(1.75rem,4vw,2.6rem)] leading-tight font-bold tracking-[-0.035em] text-ink">
+        <h1 className="font-display text-[clamp(1.75rem,4vw,2.6rem)] leading-tight font-medium tracking-[-0.035em] text-ink">
           This page didn&apos;t pass verification.
         </h1>
         <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
@@ -73,7 +73,7 @@ export function NotFoundView() {
       >
         <div className="rounded-[24px] border border-white bg-white/75 p-5 shadow-glass backdrop-blur-xl">
           <div className="flex items-center justify-between">
-            <p className="font-display text-[14px] font-bold text-ink">Integrity report</p>
+            <p className="font-display text-[14px] font-medium text-ink">Integrity report</p>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-0.5 text-[12px] font-medium text-rose-900 ring-1 ring-rose-600/20">
               <ShieldX className="size-3.5" /> Not found
             </span>
@@ -91,7 +91,7 @@ export function NotFoundView() {
           aria-label="Suggested pages"
           className="rounded-[24px] border border-white bg-white/75 p-5 shadow-glass backdrop-blur-xl"
         >
-          <p className="font-display text-[14px] font-bold text-ink">Verified destinations</p>
+          <p className="font-display text-[14px] font-medium text-ink">Verified destinations</p>
           <ul className="mt-3 space-y-1">
             {notFoundReport.suggestions.map((s) => (
               <li key={s.href}>

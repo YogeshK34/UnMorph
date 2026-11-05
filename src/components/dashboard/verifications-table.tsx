@@ -37,7 +37,7 @@ export function VerificationsTable({
     <div className="rounded-3xl border border-line/80 bg-white">
       <div className="flex flex-col gap-4 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="font-display text-[17px] font-bold tracking-tight text-ink">
+          <h2 className="font-display text-[17px] font-medium tracking-tight text-ink">
             Recent verifications
           </h2>
           <p className="mt-0.5 text-[13px] text-muted">

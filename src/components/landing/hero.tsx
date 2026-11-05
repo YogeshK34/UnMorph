@@ -72,7 +72,7 @@ export function Hero() {
           </span>
         </motion.div>
 
-        <h1 className="mt-7 font-display text-[clamp(2.75rem,7.6vw,5.75rem)] leading-[0.98] font-bold tracking-[-0.045em] text-ink">
+        <h1 className="mt-7 font-display text-[clamp(2.75rem,7.6vw,5.75rem)] leading-[0.98] font-medium tracking-[-0.045em] text-ink">
           <RevealWords text="Prevent morphing." immediate delay={0.2} />
           <br />
           <RevealWords

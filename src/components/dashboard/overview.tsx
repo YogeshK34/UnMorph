@@ -43,7 +43,7 @@ export function DashboardOverview() {
           <p className="text-[13px] font-medium text-brand-teal">
             Welcome back, {mockUser.name.split(" ")[0]}
           </p>
-          <h1 className="mt-1 font-display text-[1.85rem] leading-tight font-bold tracking-[-0.03em] text-ink">
+          <h1 className="mt-1 font-display text-[1.85rem] leading-tight font-medium tracking-[-0.03em] text-ink">
             Image verification
           </h1>
           <p className="mt-1 text-[14px] text-muted">

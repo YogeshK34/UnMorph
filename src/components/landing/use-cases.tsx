@@ -154,7 +154,7 @@ function UseCaseCard({ item, index }: { item: UseCase; index: number }) {
         <span className="grid size-10 place-items-center rounded-xl bg-ink text-brand-cyan">
           <Icon className="size-[18px]" strokeWidth={1.8} />
         </span>
-        <h3 className="mt-4 font-display text-[1.3rem] font-bold tracking-[-0.02em] text-ink">
+        <h3 className="mt-4 font-display text-[1.3rem] font-medium tracking-[-0.02em] text-ink">
           {item.title}
         </h3>
         <p className="mt-2 text-[14.5px] leading-relaxed text-muted">{item.body}</p>

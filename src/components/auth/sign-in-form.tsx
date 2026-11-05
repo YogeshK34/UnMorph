@@ -44,7 +44,7 @@ export function SignInForm() {
 
   return (
     <div className="w-full max-w-[400px]">
-      <h1 className="font-display text-[2rem] font-bold tracking-[-0.035em] text-ink">
+      <h1 className="font-display text-[2rem] font-medium tracking-[-0.035em] text-ink">
         Welcome back
       </h1>
       <p className="mt-2 text-[15px] text-muted">Sign in to verify and protect your images.</p>

@@ -26,7 +26,7 @@ export function Sidebar() {
       </div>
 
       <div className="mt-6 flex items-center gap-3 rounded-2xl bg-canvas px-3 py-2.5 ring-1 ring-line/70">
-        <span className="grid size-8 place-items-center rounded-lg bg-ink font-display text-[12px] font-bold text-brand-cyan">
+        <span className="grid size-8 place-items-center rounded-lg bg-ink font-display text-[12px] font-medium text-brand-cyan">
           RM
         </span>
         <span className="min-w-0 leading-tight">
@@ -112,7 +112,7 @@ export function Sidebar() {
         </div>
 
         <div className="flex items-center gap-3 px-1">
-          <span className="grid size-9 place-items-center rounded-full bg-gradient-to-br from-brand-cyan to-brand-teal text-[12px] font-bold text-white">
+          <span className="grid size-9 place-items-center rounded-full bg-gradient-to-br from-brand-cyan to-brand-teal text-[12px] font-medium text-white">
             {mockUser.initials}
           </span>
           <span className="min-w-0 flex-1 leading-tight">

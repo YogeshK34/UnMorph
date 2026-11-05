@@ -276,7 +276,7 @@ function IslandBrand() {
   return (
     <Link href="/" aria-label="UnMorph home" className="flex items-center gap-2 rounded-full">
       <LogoMark size={22} />
-      <span className="font-display text-[15px] font-bold tracking-[-0.02em]">UnMorph</span>
+      <span className="font-display text-[15px] font-medium tracking-[-0.02em]">UnMorph</span>
     </Link>
   );
 }

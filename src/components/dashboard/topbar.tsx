@@ -32,7 +32,7 @@ export function Topbar() {
             <Bell className="size-4" />
             <span className="absolute top-2 right-2 size-1.5 rounded-full bg-verdict-tampered ring-2 ring-canvas" />
           </button>
-          <span className="grid size-9 place-items-center rounded-full bg-gradient-to-br from-brand-cyan to-brand-teal text-[12px] font-bold text-white">
+          <span className="grid size-9 place-items-center rounded-full bg-gradient-to-br from-brand-cyan to-brand-teal text-[12px] font-medium text-white">
             {mockUser.initials}
           </span>
           <Link

@@ -74,7 +74,7 @@ export function VerificationDrawer({
                 <p className="text-[12px] text-muted">{item.id} · Integrity report</p>
                 <h2
                   id="drawer-title"
-                  className="mt-0.5 truncate font-display text-lg font-bold tracking-tight text-ink"
+                  className="mt-0.5 truncate font-display text-lg font-medium tracking-tight text-ink"
                 >
                   {item.fileName}
                 </h2>
@@ -133,7 +133,7 @@ export function VerificationDrawer({
                 <Row label="Source" value={item.source} />
               </dl>
 
-              <h3 className="mt-6 font-display text-[14px] font-bold text-ink">
+              <h3 className="mt-6 font-display text-[14px] font-medium text-ink">
                 Integrity history
               </h3>
               <ol className="relative mt-3 space-y-4 border-l border-line pl-5">

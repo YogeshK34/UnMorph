@@ -78,7 +78,7 @@ export function BrandPanel() {
       </div>
 
       <div className="relative p-10">
-        <h2 className="max-w-md font-display text-[2rem] leading-[1.08] font-bold tracking-[-0.035em]">
+        <h2 className="max-w-md font-display text-[2rem] leading-[1.08] font-medium tracking-[-0.035em]">
           Every image deserves a <span className="text-gradient-brand">provable origin.</span>
         </h2>
         <ul className="mt-6 space-y-2.5">

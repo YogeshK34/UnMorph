@@ -45,7 +45,7 @@ export function CallToAction() {
         />
 
         <div className="relative">
-          <h2 className="mx-auto max-w-3xl font-display text-[clamp(2.25rem,5.6vw,4.25rem)] leading-[1.02] font-bold tracking-[-0.045em] text-white">
+          <h2 className="mx-auto max-w-3xl font-display text-[clamp(2.25rem,5.6vw,4.25rem)] leading-[1.02] font-medium tracking-[-0.045em] text-white">
             <RevealWords text="Make every image" />
             <br />
             <RevealWords text="provable." delay={0.2} wordClassName="text-gradient-brand" />
