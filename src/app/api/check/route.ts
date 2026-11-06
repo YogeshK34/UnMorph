@@ -6,6 +6,25 @@ function isValidEthereumAddress(address: unknown): address is string {
   return typeof address === "string" && /^0x[0-9a-fA-F]{40}$/.test(address.trim());
 }
 
+/**
+ * Reads a custom schema attribute off a query row. Without a `.from(schema)` selection, the SDK
+ * returns every custom attribute wrapped as `{ type, value }` under `$attributes` — never as a
+ * top-level field — so callers must unwrap it here rather than reading `entity.<name>` directly.
+ */
+function getAttributeValue(
+  entity: ArkivEntity | null | undefined,
+  name: string,
+): string | undefined {
+  const attributes = entity?.$attributes as Record<string, { value?: unknown }> | undefined;
+  const value = attributes?.[name]?.value;
+  return typeof value === "string" ? value : undefined;
+}
+
+function getEntityOwner(entity: ArkivEntity | null | undefined): string {
+  const owner = entity?.$owner;
+  return typeof owner === "string" ? owner.toLowerCase() : "";
+}
+
 function parseEntityPayload(entity: ArkivEntity | null | undefined): {
   swarmRef: string;
   registeredAt: number;
@@ -14,18 +33,14 @@ function parseEntityPayload(entity: ArkivEntity | null | undefined): {
     swarmRef: "",
     registeredAt: Math.floor(Date.now() / 1000),
   };
-  if (!entity || !entity.payload) return fallback;
+
+  // The `payload` column is a `bytes` attribute, decoded by the SDK as a lowercase 0x hex string —
+  // never a Uint8Array — so it must be hex-decoded back to UTF-8 before JSON.parse.
+  const hexPayload = getAttributeValue(entity, "payload");
+  if (!hexPayload) return fallback;
+
   try {
-    if (typeof entity.payload === "object" && !(entity.payload instanceof Uint8Array)) {
-      return {
-        swarmRef: entity.payload.swarmRef || fallback.swarmRef,
-        registeredAt: entity.payload.registeredAt ?? fallback.registeredAt,
-      };
-    }
-    const text =
-      entity.payload instanceof Uint8Array
-        ? new TextDecoder().decode(entity.payload)
-        : String(entity.payload);
+    const text = Buffer.from(hexPayload.replace(/^0x/, ""), "hex").toString("utf-8");
     const parsed = JSON.parse(text);
     return {
       swarmRef: parsed.swarmRef || fallback.swarmRef,
@@ -110,7 +125,7 @@ export async function POST(request: NextRequest) {
             { status: 200 },
           );
         } else {
-          const legitimateOwner = (exactMatch.$owner || exactMatch.owner || "").toLowerCase();
+          const legitimateOwner = getEntityOwner(exactMatch);
           return NextResponse.json(
             {
               success: true,
@@ -131,8 +146,9 @@ export async function POST(request: NextRequest) {
       const similarCandidates: { entity: ArkivEntity; similarity: number }[] = [];
 
       for (const candidate of candidates) {
-        if (!candidate.imageHash) continue;
-        const sim = similarityPercent(candidate.imageHash, fullHash);
+        const candidateHash = getAttributeValue(candidate, "imageHash");
+        if (!candidateHash) continue;
+        const sim = similarityPercent(candidateHash, fullHash);
         if (sim >= 70) {
           similarCandidates.push({ entity: candidate, similarity: sim });
         }
@@ -141,7 +157,8 @@ export async function POST(request: NextRequest) {
       if (similarCandidates.length > 0) {
         similarCandidates.sort((a, b) => b.similarity - a.similarity);
         const best = similarCandidates[0];
-        const isOwner = await verifyOwnership(best.entity.imageHash, cleanClaimer);
+        const bestHash = getAttributeValue(best.entity, "imageHash") || "";
+        const isOwner = await verifyOwnership(bestHash, cleanClaimer);
 
         if (isOwner) {
           const { swarmRef, registeredAt } = parseEntityPayload(best.entity);
@@ -158,7 +175,7 @@ export async function POST(request: NextRequest) {
             { status: 200 },
           );
         } else {
-          const legitimateOwner = (best.entity.$owner || best.entity.owner || "").toLowerCase();
+          const legitimateOwner = getEntityOwner(best.entity);
           return NextResponse.json(
             {
               success: true,
@@ -166,7 +183,7 @@ export async function POST(request: NextRequest) {
                 status: "MORPHING_DETECTED",
                 similarityPercent: best.similarity,
                 legitimateOwner,
-                targetImageHash: best.entity.imageHash,
+                targetImageHash: bestHash,
               },
             },
             { status: 200 },
@@ -183,7 +200,7 @@ export async function POST(request: NextRequest) {
       // mode === "new"
       const exactMatch = await findExactImage(fullHash);
       if (exactMatch) {
-        const owner = (exactMatch.$owner || exactMatch.owner || "").toLowerCase();
+        const owner = getEntityOwner(exactMatch);
         const { registeredAt } = parseEntityPayload(exactMatch);
         if (owner === cleanClaimer) {
           return NextResponse.json(
@@ -210,8 +227,9 @@ export async function POST(request: NextRequest) {
       const similarCandidates: { entity: ArkivEntity; similarity: number }[] = [];
 
       for (const candidate of candidates) {
-        if (!candidate.imageHash) continue;
-        const sim = similarityPercent(candidate.imageHash, fullHash);
+        const candidateHash = getAttributeValue(candidate, "imageHash");
+        if (!candidateHash) continue;
+        const sim = similarityPercent(candidateHash, fullHash);
         if (sim >= 70) {
           similarCandidates.push({ entity: candidate, similarity: sim });
         }
@@ -220,7 +238,8 @@ export async function POST(request: NextRequest) {
       if (similarCandidates.length > 0) {
         similarCandidates.sort((a, b) => b.similarity - a.similarity);
         const best = similarCandidates[0];
-        const owner = (best.entity.$owner || best.entity.owner || "").toLowerCase();
+        const owner = getEntityOwner(best.entity);
+        const bestHash = getAttributeValue(best.entity, "imageHash") || "";
         const { registeredAt } = parseEntityPayload(best.entity);
 
         if (owner === cleanClaimer) {
@@ -236,7 +255,7 @@ export async function POST(request: NextRequest) {
                 status: "MORPHING_DETECTED",
                 similarityPercent: best.similarity,
                 legitimateOwner: owner,
-                targetImageHash: best.entity.imageHash,
+                targetImageHash: bestHash,
               },
             },
             { status: 200 },

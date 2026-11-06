@@ -53,6 +53,20 @@ export type ExistingImageResult =
     };
 
 /**
+ * Reads a custom schema attribute off a query row. Without a `.from(schema)` selection, the SDK
+ * returns every custom attribute wrapped as `{ type, value }` under `$attributes` — never as a
+ * top-level field — so callers must unwrap it here rather than reading `entity.<name>` directly.
+ */
+function getAttributeValue(
+  entity: ArkivEntity | null | undefined,
+  name: string,
+): string | undefined {
+  const attributes = entity?.$attributes as Record<string, { value?: unknown }> | undefined;
+  const value = attributes?.[name]?.value;
+  return typeof value === "string" ? value : undefined;
+}
+
+/**
  * Extracts and parses JSON payload fields from an Arkiv entity safely.
  */
 function parseEntityPayload(entity: ArkivEntity | null | undefined): {
@@ -64,25 +78,16 @@ function parseEntityPayload(entity: ArkivEntity | null | undefined): {
     registeredAt: Math.floor(Date.now() / 1000),
   };
 
-  if (!entity || !entity.payload) {
-    return fallback;
-  }
-
-  if (typeof entity.payload === "object" && !(entity.payload instanceof Uint8Array)) {
-    return {
-      swarmRef: entity.payload.swarmRef || "",
-      registeredAt: entity.payload.registeredAt ?? fallback.registeredAt,
-    };
-  }
+  // The `payload` column is a `bytes` attribute, decoded by the SDK as a lowercase 0x hex string —
+  // never a Uint8Array — so it must be hex-decoded back to UTF-8 before JSON.parse.
+  const hexPayload = getAttributeValue(entity, "payload");
+  if (!hexPayload) return fallback;
 
   try {
-    const rawText =
-      typeof entity.payload === "string"
-        ? entity.payload
-        : new TextDecoder().decode(entity.payload);
-    const parsed = JSON.parse(rawText);
+    const text = Buffer.from(hexPayload.replace(/^0x/, ""), "hex").toString("utf-8");
+    const parsed = JSON.parse(text);
     return {
-      swarmRef: parsed.swarmRef || "",
+      swarmRef: parsed.swarmRef || fallback.swarmRef,
       registeredAt: parsed.registeredAt ?? fallback.registeredAt,
     };
   } catch {
@@ -94,19 +99,15 @@ function parseEntityPayload(entity: ArkivEntity | null | undefined): {
  * Extracts the owner address from an Arkiv entity.
  */
 function getEntityOwner(entity: ArkivEntity | null | undefined): string {
-  if (!entity) return "";
-  const owner =
-    entity.$owner || entity.owner || entity.attributes?.$owner || entity.attributes?.owner || "";
-  return owner.toString().toLowerCase();
+  const owner = entity?.$owner;
+  return typeof owner === "string" ? owner.toLowerCase() : "";
 }
 
 /**
  * Extracts the perceptual imageHash from an Arkiv entity.
  */
 function getEntityHash(entity: ArkivEntity | null | undefined): string {
-  if (!entity) return "";
-  const hash = entity.attributes?.imageHash || entity.imageHash || entity.attributes?.hash || "";
-  return hash.toString().toLowerCase().replace(/^0x/, "");
+  return (getAttributeValue(entity, "imageHash") || "").toLowerCase().replace(/^0x/, "");
 }
 
 /**

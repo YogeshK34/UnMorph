@@ -41,6 +41,20 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 
 type Subject = VerificationSubject & { previewUrl?: string };
 
+/** The shape of `result` returned by `POST /api/check`, as consumed by this panel. */
+type ApiCheckResult =
+  | { status: "VERIFIED"; owner: string; swarmRef: string; registeredAt: number }
+  | { status: "NOT_REGISTERED" }
+  | {
+      status: "MORPHING_DETECTED";
+      similarityPercent: number;
+      legitimateOwner: string;
+      targetImageHash: string;
+      incidentKey?: string;
+      txHash?: string;
+    }
+  | { status: "ALREADY_REGISTERED"; owner: string; registeredAt: number };
+
 type Run =
   | { phase: "idle" }
   | { phase: "running"; subject: Subject; step: number; hash?: string }
@@ -50,7 +64,7 @@ type Run =
       hash: string;
       result: VerdictResult;
       record: Verification;
-      apiResult?: Record<string, unknown>;
+      apiResult?: ApiCheckResult;
     }
   | { phase: "error"; message: string };
 
@@ -142,7 +156,7 @@ export function VerifyPanel({
       setRun({ phase: "running", subject, step: 0 });
 
       // Run API check in parallel with animation steps if a real File is provided
-      const apiCheckPromise = (async () => {
+      const apiCheckPromise = (async (): Promise<ApiCheckResult | null> => {
         if (!file) return null;
         try {
           const connectedWallet = address || "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
@@ -158,7 +172,7 @@ export function VerifyPanel({
           if (response.ok) {
             const data = await response.json();
             if (data.success && data.result) {
-              return data.result;
+              return data.result as ApiCheckResult;
             }
           }
         } catch {
@@ -239,7 +253,7 @@ export function VerifyPanel({
       // Uploaded files get a stable placeholder scene for their table thumbnail.
       const final = subject.previewUrl ? { ...subject, scene: sceneForHash(hash) } : subject;
       const record = buildVerification(final, hash, result, sequence);
-      setRun({ phase: "done", subject: final, hash, result, record, apiResult });
+      setRun({ phase: "done", subject: final, hash, result, record, apiResult: apiResult ?? undefined });
       onComplete(record);
     },
     [address, createIncidentOnChain, isConnected, onComplete, selectedMode, sequence],

@@ -74,13 +74,13 @@ export const arkivTestnet = rabdi({
 });
 
 /**
- * Ensures the connected wallet is on the Arkiv Rabdi testnet (Chain ID: 0x76ee4f / 7794095).
+ * Ensures the connected wallet is on the Arkiv Rabdi testnet (Chain ID: 0x76edaf / 7794095).
  */
 async function ensureRabdiNetwork(ethereum: EthereumRpcProvider) {
   try {
     await ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: "0x76ee4f" }],
+      params: [{ chainId: "0x76edaf" }],
     });
   } catch (switchError: unknown) {
     const err = switchError as {
@@ -99,7 +99,7 @@ async function ensureRabdiNetwork(ethereum: EthereumRpcProvider) {
           method: "wallet_addEthereumChain",
           params: [
             {
-              chainId: "0x76ee4f",
+              chainId: "0x76edaf",
               chainName: "Arkiv Rabdi Testnet",
               nativeCurrency: {
                 name: "Golem",
@@ -174,7 +174,7 @@ export function useArkivWriter() {
             method: "eth_chainId",
           }),
         );
-        console.log("Expected: 0x76ee4f (7794095)");
+        console.log("Expected: 0x76edaf (7794095)");
         console.log("Step 4: Ensuring Rabdi network...");
         await ensureRabdiNetwork(ethereum);
         console.log("Step 4b: Rabdi network confirmed");
@@ -312,7 +312,7 @@ export function useArkivWriter() {
             method: "eth_chainId",
           }),
         );
-        console.log("Expected: 0x76ee4f (7794095)");
+        console.log("Expected: 0x76edaf (7794095)");
         console.log("Step 4: Ensuring Rabdi network...");
         await ensureRabdiNetwork(ethereum);
         console.log("Step 4b: Rabdi network confirmed");

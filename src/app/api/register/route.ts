@@ -30,17 +30,12 @@ export async function POST(request: NextRequest) {
 
     // 1. Compute 64-bit perceptual hash & buckets (client-free heavy compute)
     const pHashResult = await computePHash(imageBuffer);
-    const resultWithBuckets = pHashResult as Partial<PHashResult> & {
-      buckets?: { b0?: string; b1?: string; b2?: string; b3?: string };
+    const buckets = {
+      b0: pHashResult.b0,
+      b1: pHashResult.b1,
+      b2: pHashResult.b2,
+      b3: pHashResult.b3,
     };
-    const buckets = pHashResult.b0
-      ? {
-          b0: pHashResult.b0,
-          b1: pHashResult.b1,
-          b2: pHashResult.b2,
-          b3: pHashResult.b3,
-        }
-      : resultWithBuckets.buckets || {};
 
     // 2. Upload unencrypted backup to Swarm decentralized storage
     const swarm = await uploadImageToSwarm(imageBuffer, mimeType);

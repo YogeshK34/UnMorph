@@ -4,24 +4,29 @@ import {
   defineSchema,
   str,
   bytes,
+  addr,
   ExpirationTime,
   isSchema,
 } from "@arkiv-network/sdk";
 import { rabdi } from "@arkiv-network/sdk/chains";
+import { and, eq, or, type Expression } from "@arkiv-network/sdk/query";
 import { http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import type { PHashResult } from "./phash";
 
 /**
- * Arkiv Entity representation returned by queries and lookups.
+ * Arkiv Entity row as returned by `query()` with no `.from(schema)` selection: system fields are
+ * flat `$`-prefixed keys, and every custom schema attribute (imageHash, b0..b3, payload, ...) is
+ * wrapped as `{ type, value }` under `$attributes` — never a top-level field.
  */
 export interface ArkivEntity {
-  entityKey: string;
+  $key?: string;
   $owner?: string;
+  $creator?: string;
+  $createdAt?: bigint | number;
+  $updatedAt?: bigint | number;
   $expiresAt?: bigint | number;
-  payload?: unknown;
-  contentType?: string;
-  attributes?: Record<string, unknown>;
+  $attributes?: Record<string, { type: string; value: unknown }>;
   [key: string]: unknown;
 }
 
@@ -74,12 +79,12 @@ export const IncidentLogSchema = defineSchema("morphing_attempt", {
 });
 
 export interface ArkivPublicClientLike {
-  query: (queryStr: string) => Promise<unknown>;
+  query: (query: Expression | string) => Promise<unknown>;
   [key: string]: unknown;
 }
 
 export interface ArkivWalletClientLike {
-  createEntity: (...args: unknown[]) => Promise<{ entityKey: string; txHash?: string }>;
+  createEntity: (...args: unknown[]) => Promise<{ entityKey: string; txHash: string }>;
   [key: string]: unknown;
 }
 
@@ -146,7 +151,7 @@ export function createDefaultWalletClient(): ArkivWalletClientLike {
 
           const rawCreateEntity = baseClient.createEntity as (
             ...args: unknown[]
-          ) => Promise<{ entityKey: string; txHash?: string }>;
+          ) => Promise<{ entityKey: string; txHash: string }>;
 
           return await rawCreateEntity(
             schema,
@@ -158,7 +163,7 @@ export function createDefaultWalletClient(): ArkivWalletClientLike {
       }
       const rawCreateEntity = baseClient.createEntity as (
         ...args: unknown[]
-      ) => Promise<{ entityKey: string; txHash?: string }>;
+      ) => Promise<{ entityKey: string; txHash: string }>;
       return await rawCreateEntity(schemaOrData, values, options, txParams);
     },
   };
@@ -246,7 +251,6 @@ export async function registerImage(
 
 /**
  * 2. findExactImage — exact lookup checking if imageHash already exists.
- * Query: `type = "image_registry" AND imageHash = "${imageHash}"`
  * Returns full entity object or null if not found. Never throws.
  */
 export async function findExactImage(imageHash: string): Promise<ArkivEntity | null> {
@@ -255,21 +259,21 @@ export async function findExactImage(imageHash: string): Promise<ArkivEntity | n
   }
 
   const cleanHash = imageHash.toLowerCase().replace(/^0x/, "");
-  const where = `type = "image_registry" AND imageHash = "${cleanHash}"`;
+  const where = and(eq("type", "image_registry"), eq("imageHash", cleanHash));
 
   try {
     const result = await publicClient.query(where);
     const entities = extractEntities(result);
     return entities.length > 0 ? entities[0] : null;
-  } catch {
+  } catch (err) {
+    console.error("findExactImage query failed:", err);
     return null;
   }
 }
 
 /**
  * 3. findSimilarImages — bucket lookup to find similar image candidates.
- * Query: `type = "image_registry" AND (b0 = "${b0}" OR b1 = "${b1}" OR b2 = "${b2}" OR b3 = "${b3}")`
- * Returns raw candidates (does NOT filter by hamming distance here; filtered in lib/decisions.ts).
+ * Returns raw candidates (does NOT filter by hamming distance here; filtered by the caller).
  */
 export async function findSimilarImages(buckets: {
   b0: string;
@@ -286,19 +290,22 @@ export async function findSimilarImages(buckets: {
   const b2 = buckets.b2.toLowerCase().replace(/^0x/, "");
   const b3 = buckets.b3.toLowerCase().replace(/^0x/, "");
 
-  const where = `type = "image_registry" AND (b0 = "${b0}" OR b1 = "${b1}" OR b2 = "${b2}" OR b3 = "${b3}")`;
+  const where = and(
+    eq("type", "image_registry"),
+    or(eq("b0", b0), eq("b1", b1), eq("b2", b2), eq("b3", b3)),
+  );
 
   try {
     const result = await publicClient.query(where);
     return extractEntities(result);
-  } catch {
+  } catch (err) {
+    console.error("findSimilarImages query failed:", err);
     return [];
   }
 }
 
 /**
  * 4. verifyOwnership — verifies if an image is registered and owned by claimerAddress.
- * Query: `type = "image_registry" AND imageHash = "${imageHash}" AND $owner = 0x${claimerAddress.toLowerCase()}`
  * Returns true if owned by claimerAddress, false otherwise.
  */
 export async function verifyOwnership(imageHash: string, claimerAddress: string): Promise<boolean> {
@@ -307,14 +314,19 @@ export async function verifyOwnership(imageHash: string, claimerAddress: string)
   }
 
   const cleanHash = imageHash.toLowerCase().replace(/^0x/, "");
-  const cleanAddress = claimerAddress.toLowerCase().replace(/^0x/, "");
-  const where = `type = "image_registry" AND imageHash = "${cleanHash}" AND $owner = 0x${cleanAddress}`;
+  const cleanAddress = `0x${claimerAddress.toLowerCase().replace(/^0x/, "")}`;
 
   try {
+    const where = and(
+      eq("type", "image_registry"),
+      eq("imageHash", cleanHash),
+      eq("$owner", addr(cleanAddress)),
+    );
     const result = await publicClient.query(where);
     const entities = extractEntities(result);
     return entities.length > 0;
-  } catch {
+  } catch (err) {
+    console.error("verifyOwnership query failed:", err);
     return false;
   }
 }
@@ -366,7 +378,6 @@ export async function createIncidentLog(
 
 /**
  * 6. getIncidentLogsForOwner — queries incident logs for a given legitimate owner wallet.
- * Query: `type = "morphing_attempt" AND legitimateOwner = "${ownerWallet}"`
  * Returns full entity objects. Returns empty array if none found, never throws.
  */
 export async function getIncidentLogsForOwner(ownerWallet: string): Promise<ArkivEntity[]> {
@@ -375,12 +386,13 @@ export async function getIncidentLogsForOwner(ownerWallet: string): Promise<Arki
   }
 
   const cleanWallet = ownerWallet.toLowerCase();
-  const where = `type = "morphing_attempt" AND legitimateOwner = "${cleanWallet}"`;
+  const where = and(eq("type", "morphing_attempt"), eq("legitimateOwner", cleanWallet));
 
   try {
     const result = await publicClient.query(where);
     return extractEntities(result);
-  } catch {
+  } catch (err) {
+    console.error("getIncidentLogsForOwner query failed:", err);
     return [];
   }
 }
