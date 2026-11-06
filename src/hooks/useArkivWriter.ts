@@ -15,7 +15,17 @@ interface EthereumRpcProvider {
 
 function getEthereum(): EthereumRpcProvider | undefined {
   if (typeof window === "undefined") return undefined;
-  return (window as unknown as { ethereum?: EthereumRpcProvider }).ethereum;
+  try {
+    const win = window as unknown as {
+      ethereum?: EthereumRpcProvider & { providers?: EthereumRpcProvider[] };
+    };
+    if (win.ethereum?.providers?.length) {
+      return win.ethereum.providers[0];
+    }
+    return win.ethereum;
+  } catch {
+    return undefined;
+  }
 }
 
 function getErrorMessage(err: unknown, fallback: string): string {
@@ -64,14 +74,9 @@ export const arkivTestnet = rabdi({
 });
 
 /**
- * Ensures MetaMask is connected to the Arkiv Rabdi testnet (Chain ID: 0x76ee4f / 7794095).
+ * Ensures the connected wallet is on the Arkiv Rabdi testnet (Chain ID: 0x76ee4f / 7794095).
  */
-async function ensureRabdiNetwork() {
-  const ethereum = getEthereum();
-  if (!ethereum) {
-    throw new Error("Please install MetaMask");
-  }
-
+async function ensureRabdiNetwork(ethereum: EthereumRpcProvider) {
   try {
     await ethereum.request({
       method: "wallet_switchEthereumChain",
@@ -111,11 +116,11 @@ async function ensureRabdiNetwork() {
           ],
         });
       } catch (addError: unknown) {
-        throw new Error(getErrorMessage(addError, "Failed to add Arkiv Rabdi Testnet to MetaMask"));
+        throw new Error(getErrorMessage(addError, "Failed to add Arkiv Rabdi Testnet to wallet"));
       }
     } else {
       throw new Error(
-        getErrorMessage(switchError, "Failed to switch to Arkiv Rabdi Testnet in MetaMask"),
+        getErrorMessage(switchError, "Failed to switch to Arkiv Rabdi Testnet in wallet"),
       );
     }
   }
@@ -125,13 +130,13 @@ async function ensureRabdiNetwork() {
  * Hook to write entities to Arkiv Web3 database signed directly by MetaMask.
  */
 export function useArkivWriter() {
-  const { address } = useAccount();
+  const { address, connector } = useAccount();
   const { data: walletClient } = useWalletClient();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Registers a new image on Arkiv directly via MetaMask.
+   * Registers a new image on Arkiv directly via connected wallet.
    */
   const registerImageOnChain = useCallback(
     async (
@@ -145,14 +150,24 @@ export function useArkivWriter() {
       setError(null);
 
       try {
-        const ethereum = getEthereum();
+        let ethereum: EthereumRpcProvider | undefined;
+        if (connector) {
+          try {
+            ethereum = (await connector.getProvider()) as EthereumRpcProvider;
+          } catch {
+            // fallback
+          }
+        }
         if (!ethereum) {
-          const err = "Please install MetaMask";
+          ethereum = getEthereum();
+        }
+        if (!ethereum) {
+          const err = "Please connect an Ethereum wallet";
           setError(err);
           throw new Error(err);
         }
 
-        // Prompt MetaMask to switch or add Arkiv Rabdi testnet
+        // Prompt wallet to switch or add Arkiv Rabdi testnet
         console.log(
           "Current chainId:",
           await ethereum.request({
@@ -161,7 +176,7 @@ export function useArkivWriter() {
         );
         console.log("Expected: 0x76ee4f (7794095)");
         console.log("Step 4: Ensuring Rabdi network...");
-        await ensureRabdiNetwork();
+        await ensureRabdiNetwork(ethereum);
         console.log("Step 4b: Rabdi network confirmed");
 
         // Resolve active account
@@ -189,7 +204,7 @@ export function useArkivWriter() {
         }
 
         if (!activeAddress) {
-          throw new Error("No connected account found in MetaMask");
+          throw new Error("No connected account found in wallet");
         }
 
         console.log("Step 5: Network confirmed, creating Arkiv client for account:", activeAddress);
@@ -254,18 +269,18 @@ export function useArkivWriter() {
         };
       } catch (err: unknown) {
         console.error("registerImageOnChain ERROR:", err);
-        const msg = getErrorMessage(err, "Failed to sign registration with MetaMask");
+        const msg = getErrorMessage(err, "Failed to sign registration with wallet");
         setError(msg);
         throw new Error(msg);
       } finally {
         setIsPending(false);
       }
     },
-    [address, walletClient],
+    [address, connector, walletClient],
   );
 
   /**
-   * Logs a detected morphing incident on Arkiv directly via MetaMask.
+   * Logs a detected morphing incident on Arkiv directly via connected wallet.
    */
   const createIncidentOnChain = useCallback(
     async (params: CreateIncidentOnChainParams): Promise<ArkivWriteResult> => {
@@ -273,14 +288,24 @@ export function useArkivWriter() {
       setError(null);
 
       try {
-        const ethereum = getEthereum();
+        let ethereum: EthereumRpcProvider | undefined;
+        if (connector) {
+          try {
+            ethereum = (await connector.getProvider()) as EthereumRpcProvider;
+          } catch {
+            // fallback
+          }
+        }
         if (!ethereum) {
-          const err = "Please install MetaMask";
+          ethereum = getEthereum();
+        }
+        if (!ethereum) {
+          const err = "Please connect an Ethereum wallet";
           setError(err);
           throw new Error(err);
         }
 
-        // Prompt MetaMask to switch or add Arkiv Rabdi testnet
+        // Prompt wallet to switch or add Arkiv Rabdi testnet
         console.log(
           "Current chainId:",
           await ethereum.request({
@@ -289,7 +314,7 @@ export function useArkivWriter() {
         );
         console.log("Expected: 0x76ee4f (7794095)");
         console.log("Step 4: Ensuring Rabdi network...");
-        await ensureRabdiNetwork();
+        await ensureRabdiNetwork(ethereum);
         console.log("Step 4b: Rabdi network confirmed");
 
         // Resolve active account
@@ -317,7 +342,7 @@ export function useArkivWriter() {
         }
 
         if (!activeAddress) {
-          throw new Error("No connected account found in MetaMask");
+          throw new Error("No connected account found in wallet");
         }
 
         // Initialize Arkiv SDK client directly with custom transport and baked-in chain
@@ -364,14 +389,14 @@ export function useArkivWriter() {
         };
       } catch (err: unknown) {
         console.error("createIncidentOnChain ERROR:", err);
-        const msg = getErrorMessage(err, "Failed to sign incident log with MetaMask");
+        const msg = getErrorMessage(err, "Failed to sign incident log with wallet");
         setError(msg);
         throw new Error(msg);
       } finally {
         setIsPending(false);
       }
     },
-    [address, walletClient],
+    [address, connector, walletClient],
   );
 
   return {

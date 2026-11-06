@@ -115,7 +115,7 @@ export function IncidentsTable() {
             <Wallet className="size-6" />
           </div>
           <h3 className="mt-3 text-[15px] font-semibold text-ink">
-            Connect MetaMask to view incident logs
+            Connect wallet to view incident logs
           </h3>
           <p className="mx-auto mt-1 max-w-md text-[13px] text-muted">
             Arkiv indexes incident logs by legitimate owner. Connect the wallet that owns your

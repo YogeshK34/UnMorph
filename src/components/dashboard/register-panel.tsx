@@ -127,8 +127,8 @@ export function RegisterPanel({ onRegistered }: { onRegistered?: () => void }) {
       const buckets = data.buckets || data.result?.buckets;
       const swarmRef = data.swarmRef || data.result?.swarmRef;
 
-      // Step 2: Call registerImageOnChain() from hook -> MetaMask popup appears -> user signs
-      setStepText("2/2: Confirm transaction in MetaMask to sign on Arkiv…");
+      // Step 2: Call registerImageOnChain() from hook -> Wallet popup appears -> user signs
+      setStepText("2/2: Confirm transaction in your wallet to sign on Arkiv…");
 
       const blocksPerDay = 24 * 60 * 30; // 43,200 blocks/day
       const lifetimeBlocks = BigInt(Math.round(lifetimeDays * blocksPerDay));
