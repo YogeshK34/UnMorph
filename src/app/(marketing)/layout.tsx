@@ -2,7 +2,7 @@ import { Footer } from "@/components/landing/footer";
 import { DynamicIsland } from "@/components/nav/dynamic-island";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 
-export default function MarketingLayout({ children }: LayoutProps<"/">) {
+export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <SmoothScroll>
       <DynamicIsland />

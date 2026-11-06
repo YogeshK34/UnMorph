@@ -1,0 +1,201 @@
+yogesh@yogesh-750XGK:~/Documents/EthGlobal-Mumbai/UnMorph$ git commit -m "feat: swarm && arkiv integrations"
+⋯ Backing up original state…
+✔ Done backing up original state (9d25d6d)!
+⋯ Hiding unstaged changes to partially staged files…
+✔ Done hiding unstaged changes to partially staged files!
+⋯ Running tasks for staged files…
+    *.{ts,tsx,js,mjs} — 31 files
+      ⋯ eslint --fix
+      ⋯ prettier --write
+    src/**/*.{ts,tsx} — 25 files
+      ⋯ jest --bail --findRelatedTests --passWithNoTests
+    *.{json,md,css,yml,yaml} — 7 files
+      ⋯ prettier --write
+
+✔ prettier --write
+✔ jest --bail --findRelatedTests --passWithNoTests
+✖ eslint --fix
+↓ prettier --write
+
+✖ Failed to run tasks for staged files!
+↓ Skipped staging changes from tasks…
+↓ Skipped restoring unstaged changes…
+⋯ Reverting to original state because of errors…
+✔ Done reverting to original state!
+⋯ Cleaning up temporary files…
+✔ Done cleaning up temporary files!
+
+✖ eslint --fix:
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/scripts/test-flow.ts
+  17:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:30  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/app/api/check/route.ts
+  257:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/app/api/incidents/route.ts
+  31:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/app/api/register/route.ts
+  40:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/ConnectWallet.tsx
+  15:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/ConnectWallet.tsx:15:5
+  13 |
+  14 |   useEffect(() => {
+> 15 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  16 |   }, []);
+  17 |
+  18 |   const displayConnected = mounted && isConnected;  react-hooks/set-state-in-effect
+  37:53  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  39:26  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/incidents-table.tsx
+   19:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/incidents-table.tsx:19:5
+  17 |   const [mounted, setMounted] = useState(false);
+  18 |   useEffect(() => {
+> 19 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |   }, []);
+  21 |
+  22 |   const { address, isConnected } = useAccount();   react-hooks/set-state-in-effect
+   25:46  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+   47:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/incidents-table.tsx:47:7
+  45 |   useEffect(() => {
+  46 |     if (!address) {
+> 47 |       setIncidents([]);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  48 |       return;
+  49 |     }
+  50 |     fetchIncidents();                                           react-hooks/set-state-in-effect
+  133:30  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+  141:99  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/incidents-table.tsx:141:99
+  139 |
+  140 |                 const sim = payload.similarityScore ?? inc.attributes?.similarityScore ?? 100;
+> 141 |                 const detectedAt = payload.detectedAt ?? inc.attributes?.detectedAt ?? Math.floor(Date.now() / 1000);
+      |                                                                                                   ^^^^^^^^^^ Cannot call impure function
+  142 |                 const targetHash = inc.attributes?.targetImageHash || "—";
+  143 |                 const claimer = inc.attributes?.claimerWallet || inc.$owner || "Unknown";
+  144 |                 const incidentKey = inc.entityKey || `inc_${i}`;  react-hooks/purity
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/register-panel.tsx
+   45:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/register-panel.tsx:45:5
+  43 |   const [mounted, setMounted] = useState(false);
+  44 |   useEffect(() => {
+> 45 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  46 |   }, []);
+  47 |
+  48 |   const { address, isConnected } = useAccount();  react-hooks/set-state-in-effect
+  152:19  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/verify-panel.tsx
+   17:3    warning  'Wallet' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   41:111  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+   96:5    error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/components/dashboard/verify-panel.tsx:96:5
+  94 |   const [mounted, setMounted] = useState(false);
+  95 |   useEffect(() => {
+> 96 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  97 |   }, []);
+  98 |
+  99 |   const { address, isConnected } = useAccount();  react-hooks/set-state-in-effect
+  231:5    warning  React Hook useCallback has missing dependencies: 'createIncidentOnChain' and 'isConnected'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/exhaustive-deps
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/hooks/useArkivWriter.ts
+   42:52  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+   46:31  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+   53:25  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+   81:26  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  119:58  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  125:37  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  163:15  warning  'viemWalletClient' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  208:34  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  209:27  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  219:21  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  246:58  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  252:37  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  290:15  warning  'viemWalletClient' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  320:32  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  321:27  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+  331:21  error    Unexpected any. Specify a different type               @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/lib/arkiv.test.ts
+  13:3  warning  'publicClient' is defined but never used  @typescript-eslint/no-unused-vars
+  14:3  warning  'walletClient' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/lib/arkiv.ts
+   22:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   24:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   25:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   79:46  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:46  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:69  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:85  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  128:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  129:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  143:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  149:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  151:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  155:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  162:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/lib/swarm.test.ts
+  1:15  warning  'SWARM_GATEWAY_URL' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/yogesh/Documents/EthGlobal-Mumbai/UnMorph/src/lib/swarm.ts
+  93:8  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 57 problems (50 errors, 7 warnings)
+
+

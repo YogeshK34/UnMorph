@@ -1,0 +1,17 @@
+🐝 Arkiv + Swarm bonus (from scratch) ⸺ $500
+Use Swarm (ethswarm.org) in your project in a meaningful way, and you are also in the running for $500. For example, keep the files your users see on Swarm and point to them from your Arkiv entities, or upload them encrypted so only the people who get the reference can open them. The most useful integration wins. It comes on top of any track prize: you can win a track and this bonus.
+
+To enter: when you submit a from-scratch project to Mirror, Build on Arkiv or Node tooling, also select this bonus. Arkiv's prizes count as one partner prize on ETHGlobal, so it does not use another of your three picks. Existing projects have their own Arkiv + Swarm bonus.
+
+
+Qualification Requirements
+Your project uses both Arkiv and Swarm. A project that uses only Swarm does not qualify.
+/arkiv/swarm.md in your repo, with:
+What you keep on Swarm, what you keep on Arkiv, and which entity field holds the Swarm reference or feed.
+One Arkiv entity key and the Swarm reference it points to, with a link we can open.
+The postage stamp batch ID you uploaded with and the wallet that bought it (or who gave you the batch), and the Bee node or service you uploaded through.
+The files in your repo that upload to Swarm and read from it.
+Steps to run one upload and one read yourself, what they need, and what we should see.
+The moment in your demo video where Swarm is used.
+What got in your way with Swarm.
+Careful: an encrypted Swarm reference contains its key, and Arkiv entities are public. Never store one in an entity as it is: encrypt it first or keep it off Arkiv.

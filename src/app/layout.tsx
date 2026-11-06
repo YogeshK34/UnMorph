@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "@/components/providers/motion-provider";
+import { Providers } from "@/app/providers";
 import { site } from "@/lib/site";
 import { inter, jakarta } from "./fonts";
 import "./globals.css";
@@ -30,11 +31,13 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} h-full`}>
       <body className="min-h-full">
-        <MotionProvider>{children}</MotionProvider>
+        <Providers>
+          <MotionProvider>{children}</MotionProvider>
+        </Providers>
       </body>
     </html>
   );
