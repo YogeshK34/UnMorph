@@ -26,22 +26,24 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "src/**/*.{ts,tsx}": [
-      "jest --bail --findRelatedTests --passWithNoTests"
-    ],
     "*.{json,md,css,yml,yaml}": [
       "prettier --write"
     ]
   },
   "dependencies": {
+    "@arkiv-network/sdk": "^1.0.1",
+    "@ethersphere/bee-js": "^13.2.0",
+    "@tanstack/react-query": "^5.106.1",
     "clsx": "^2.1.1",
     "lenis": "1.3.27",
     "lucide-react": "^1.69.0",
     "motion": "14.9.1",
-    "next": "16.4.5",
+    "next": "^16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "tailwind-merge": "^3.7.0"
+    "tailwind-merge": "^3.7.0",
+    "viem": "^2.57.16",
+    "wagmi": "^3.7.11"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

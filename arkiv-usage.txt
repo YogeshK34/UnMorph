@@ -1,0 +1,13 @@
+JSON-RPC over POST. Pass the key in the path, or as a header.
+
+Path
+curl --json '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}' \
+  https://rpc.rabdi.db-chain.testnet.arkiv.network/ark_live_rDIK…EKMy
+X-API-KEY header
+curl --json '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}' \
+  -H "X-API-KEY: ark_live_rDIK…EKMy" \
+  https://rpc.rabdi.db-chain.testnet.arkiv.network
+Authorization: Bearer
+curl --json '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}' \
+  -H "Authorization: Bearer ark_live_rDIK…EKMy" \
+  https://rpc.rabdi.db-chain.testnet.arkiv.network

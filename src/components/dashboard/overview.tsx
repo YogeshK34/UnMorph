@@ -2,10 +2,12 @@
 
 import { useCallback, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
-import { ScanSearch } from "lucide-react";
+import { ImageUp, ScanSearch } from "lucide-react";
 import { ActivityChart } from "@/components/dashboard/activity-chart";
 import { scrollToSection } from "@/components/dashboard/dashboard-nav";
+import { IncidentsTable } from "@/components/dashboard/incidents-table";
 import { KpiTiles } from "@/components/dashboard/kpi-tiles";
+import { RegisterPanel } from "@/components/dashboard/register-panel";
 import { VerificationDrawer } from "@/components/dashboard/verification-drawer";
 import { VerificationsTable } from "@/components/dashboard/verifications-table";
 import { VerifyPanel } from "@/components/dashboard/verify-panel";
@@ -50,26 +52,44 @@ export function DashboardOverview() {
             Register originals, verify copies and review integrity history across your workspace.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => scrollToSection("dash-verify")}
-          className="inline-flex h-11 shrink-0 items-center gap-2 self-start rounded-xl bg-ink px-4 text-[14px] font-semibold text-white shadow-[0_8px_24px_-10px_rgb(17_24_39/0.6)] transition-transform hover:-translate-y-0.5 sm:self-auto"
-        >
-          <ScanSearch className="size-4 text-brand-cyan" />
-          Verify an image
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scrollToSection("dash-register")}
+            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border border-line bg-white px-4 text-[14px] font-semibold text-ink shadow-xs transition hover:bg-canvas"
+          >
+            <ImageUp className="size-4 text-brand-teal" />
+            Register an image
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToSection("dash-verify")}
+            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-ink px-4 text-[14px] font-semibold text-white shadow-[0_8px_24px_-10px_rgb(17_24_39/0.6)] transition-transform hover:-translate-y-0.5"
+          >
+            <ScanSearch className="size-4 text-brand-cyan" />
+            Verify an image
+          </button>
+        </div>
       </motion.header>
 
       <KpiTiles items={kpis} />
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr]">
+      <div className="grid gap-6 xl:grid-cols-2">
+        <section id="dash-register" aria-label="Register an image">
+          <RegisterPanel />
+        </section>
         <section id="dash-verify" aria-label="Verify an image">
           <VerifyPanel onComplete={handleComplete} onOpen={setSelected} sequence={added} />
         </section>
-        <section id="dash-activity" aria-label="Verification activity">
-          <ActivityChart data={dailyActivity} />
-        </section>
       </div>
+
+      <section id="dash-incidents" aria-label="Morphing incident log">
+        <IncidentsTable />
+      </section>
+
+      <section id="dash-activity" aria-label="Verification activity">
+        <ActivityChart data={dailyActivity} />
+      </section>
 
       <section id="dash-registry" aria-label="Recent verifications">
         <VerificationsTable items={items} onSelect={setSelected} />

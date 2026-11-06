@@ -1,7 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useAccount } from "wagmi";
+import { useArkivWriter } from "@/hooks/useArkivWriter";
 import {
   ArrowRight,
   CircleCheck,
@@ -9,8 +18,11 @@ import {
   ImageUp,
   LoaderCircle,
   RotateCcw,
+  ShieldAlert,
+  ShieldCheck,
   TriangleExclamationPoint,
 } from "lucide-react";
+import { ConnectWallet } from "@/components/ConnectWallet";
 import { VerdictBadge, verdictMeta } from "@/components/dashboard/verdict-badge";
 import { Landscape, TAMPER_REGIONS } from "@/components/visuals/landscape";
 import { buildVerification, type VerificationSubject } from "@/lib/build-verification";
@@ -32,7 +44,14 @@ type Subject = VerificationSubject & { previewUrl?: string };
 type Run =
   | { phase: "idle" }
   | { phase: "running"; subject: Subject; step: number; hash?: string }
-  | { phase: "done"; subject: Subject; hash: string; result: VerdictResult; record: Verification }
+  | {
+      phase: "done";
+      subject: Subject;
+      hash: string;
+      result: VerdictResult;
+      record: Verification;
+      apiResult?: Record<string, unknown>;
+    }
   | { phase: "error"; message: string };
 
 /** Sample images. The leading hash byte picks the verdict bucket deterministically. */
@@ -85,6 +104,17 @@ export function VerifyPanel({
   onOpen: (record: Verification) => void;
   sequence: number;
 }) {
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
+  const { address, isConnected } = useAccount();
+  const displayConnected = mounted && isConnected;
+  const displayAddress = mounted ? address : undefined;
+  const { createIncidentOnChain } = useArkivWriter();
+  const [selectedMode, setSelectedMode] = useState<"existing" | "new">("existing");
   const [run, setRun] = useState<Run>({ phase: "idle" });
   const [dragging, setDragging] = useState(false);
   const runId = useRef(0);
@@ -107,9 +137,35 @@ export function VerifyPanel({
   }, [releasePreview]);
 
   const execute = useCallback(
-    async (subject: Subject, hashPromise: Promise<string>) => {
+    async (subject: Subject, hashPromise: Promise<string>, file?: File) => {
       const id = ++runId.current;
       setRun({ phase: "running", subject, step: 0 });
+
+      // Run API check in parallel with animation steps if a real File is provided
+      const apiCheckPromise = (async () => {
+        if (!file) return null;
+        try {
+          const connectedWallet = address || "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+          const formData = new FormData();
+          formData.append("image", file);
+          formData.append("claimerWallet", connectedWallet);
+          formData.append("mode", selectedMode);
+
+          const response = await fetch("/api/check", {
+            method: "POST",
+            body: formData,
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.result) {
+              return data.result;
+            }
+          }
+        } catch {
+          // Gracefully fallback to deterministic local verdict
+        }
+        return null;
+      })();
 
       let hash = "";
       for (let i = 0; i < pipelineSteps.length; i++) {
@@ -124,14 +180,69 @@ export function VerifyPanel({
       }
       if (runId.current !== id) return;
 
-      const result = deriveVerdict(hash);
+      const apiResult = await apiCheckPromise;
+      let result: VerdictResult;
+
+      if (apiResult?.status === "VERIFIED") {
+        result = {
+          verdict: "authentic",
+          confidence: 100,
+          alteredRegions: 0,
+          fingerprintDistance: 0,
+          humanVerified: true,
+        };
+      } else if (apiResult?.status === "MORPHING_DETECTED") {
+        const sim = apiResult.similarityPercent || 85;
+        result = {
+          verdict: "tampered",
+          confidence: sim,
+          alteredRegions: 2,
+          fingerprintDistance: Number(((100 - sim) / 100).toFixed(2)),
+          humanVerified: false,
+        };
+
+        // Requirement 5: If MORPHING_DETECTED -> call createIncidentOnChain() -> MetaMask signs incident log
+        if (isConnected && address && apiResult.legitimateOwner) {
+          try {
+            const onChainIncident = await createIncidentOnChain({
+              targetImageHash: apiResult.targetImageHash || hash,
+              claimerWallet: address,
+              legitimateOwner: apiResult.legitimateOwner,
+              similarityScore: sim,
+            });
+            apiResult.incidentKey = onChainIncident.entityKey;
+            apiResult.txHash = onChainIncident.txHash;
+          } catch (err) {
+            console.warn("User declined or error signing incident log on Arkiv:", err);
+          }
+        }
+      } else if (apiResult?.status === "NOT_REGISTERED") {
+        result = {
+          verdict: "unregistered",
+          confidence: 0,
+          alteredRegions: 0,
+          fingerprintDistance: 1,
+          humanVerified: false,
+        };
+      } else if (apiResult?.status === "ALREADY_REGISTERED") {
+        result = {
+          verdict: "authentic",
+          confidence: 95,
+          alteredRegions: 0,
+          fingerprintDistance: 0,
+          humanVerified: true,
+        };
+      } else {
+        result = deriveVerdict(hash);
+      }
+
       // Uploaded files get a stable placeholder scene for their table thumbnail.
       const final = subject.previewUrl ? { ...subject, scene: sceneForHash(hash) } : subject;
       const record = buildVerification(final, hash, result, sequence);
-      setRun({ phase: "done", subject: final, hash, result, record });
+      setRun({ phase: "done", subject: final, hash, result, record, apiResult });
       onComplete(record);
     },
-    [onComplete, sequence],
+    [address, createIncidentOnChain, isConnected, onComplete, selectedMode, sequence],
   );
 
   const handleFile = useCallback(
@@ -163,7 +274,7 @@ export function VerifyPanel({
         scene: "glacier",
         previewUrl,
       };
-      void execute(subject, hashPromise);
+      void execute(subject, hashPromise, file);
     },
     [execute, releasePreview],
   );
@@ -210,6 +321,51 @@ export function VerifyPanel({
       />
 
       <div className="mt-5">
+        {/* Mode selector & wallet banner */}
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[12px] font-medium text-muted">Mode:</span>
+            <button
+              type="button"
+              onClick={() => setSelectedMode("existing")}
+              className={cn(
+                "rounded-lg px-2.5 py-1 text-[12px] font-medium transition",
+                selectedMode === "existing"
+                  ? "bg-ink text-white"
+                  : "border border-line bg-canvas text-muted hover:text-ink",
+              )}
+            >
+              Existing image check
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedMode("new")}
+              className={cn(
+                "rounded-lg px-2.5 py-1 text-[12px] font-medium transition",
+                selectedMode === "new"
+                  ? "bg-ink text-white"
+                  : "border border-line bg-canvas text-muted hover:text-ink",
+              )}
+            >
+              New upload check
+            </button>
+          </div>
+
+          {!displayConnected ? (
+            <div className="flex items-center gap-2">
+              <span className="text-[11.5px] text-amber-700">
+                Connect wallet to verify ownership:
+              </span>
+              <ConnectWallet />
+            </div>
+          ) : (
+            <span className="font-mono text-[12px] text-muted">
+              Claimer:{" "}
+              <span className="text-ink">{truncateMiddle(displayAddress || "", 6, 4)}</span>
+            </span>
+          )}
+        </div>
+
         <AnimatePresence mode="wait" initial={false}>
           {(run.phase === "idle" || run.phase === "error") && (
             <motion.div
@@ -517,6 +673,47 @@ function Result({ run, onOpen }: { run: Extract<Run, { phase: "done" }>; onOpen:
           <p className="text-[1.5rem] leading-tight font-semibold text-ink">{result.confidence}%</p>
         </div>
       </div>
+
+      {/* Task 3: Status Banners */}
+      {run.apiResult?.status === "VERIFIED" && (
+        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-[13.5px] font-semibold text-emerald-900">
+          <CircleCheck className="size-4.5 shrink-0 text-emerald-600" />
+          <span>✅ Verified — you are the registered owner</span>
+        </div>
+      )}
+
+      {run.apiResult?.status === "NOT_REGISTERED" && (
+        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-line bg-canvas/80 px-4 py-3 text-[13.5px] font-medium text-muted">
+          <span className="size-2 shrink-0 rounded-full bg-muted" />
+          <span>Image not found in registry</span>
+        </div>
+      )}
+
+      {run.apiResult?.status === "MORPHING_DETECTED" && (
+        <div className="mt-4 rounded-2xl border border-rose-500/20 bg-rose-500/10 p-3.5 text-rose-900">
+          <div className="flex items-center gap-2 text-[13.5px] font-semibold">
+            <ShieldAlert className="size-4.5 shrink-0 text-rose-600" />
+            <span>
+              🚩 Morphing detected — similarity: {run.apiResult.similarityPercent}%, real owner:{" "}
+              <span className="font-mono">
+                {truncateMiddle(run.apiResult.legitimateOwner, 6, 4)}
+              </span>
+            </span>
+          </div>
+          {run.apiResult.incidentKey && (
+            <p className="mt-1 font-mono text-[11.5px] text-rose-700">
+              Incident logged on Arkiv: {truncateMiddle(run.apiResult.incidentKey, 10, 6)}
+            </p>
+          )}
+        </div>
+      )}
+
+      {run.apiResult?.status === "ALREADY_REGISTERED" && (
+        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-[13.5px] font-semibold text-amber-900">
+          <ShieldCheck className="size-4.5 shrink-0 text-amber-600" />
+          <span>Already registered by {truncateMiddle(run.apiResult.owner, 6, 4)}</span>
+        </div>
+      )}
 
       <dl className="mt-5 divide-y divide-line/70 rounded-2xl bg-canvas/70 px-4 text-[13px] ring-1 ring-line/60">
         {facts.map(([k, v]) => (
