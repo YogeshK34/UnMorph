@@ -21,24 +21,23 @@ export function SectionHeading({
   const center = align === "center";
   return (
     <div className={cn(center && "mx-auto text-center", "max-w-3xl", className)}>
-      <Reveal blur={false} y={12}>
-        <p
-          className={cn(
-            "flex items-center gap-3 text-[12px] font-semibold tracking-[0.22em] uppercase",
-            center && "justify-center",
-            tone === "light" ? "text-brand-teal" : "text-brand-cyan",
-          )}
-        >
+      <Reveal y={12}>
+        <p className={cn("flex", center && "justify-center")}>
           <span
-            className={cn("h-px w-8", tone === "light" ? "bg-brand-teal/60" : "bg-brand-cyan/60")}
-          />
-          {eyebrow}
+            className={cn(
+              "inline-block border-[3px] border-nb-black bg-nb-yellow px-3 py-1 font-heading text-[12px] font-bold tracking-[0.18em] uppercase text-nb-black",
+              tone === "dark" && "shadow-[3px_3px_0_0_#FFFDF5]",
+              tone === "light" && "shadow-nb-sm",
+            )}
+          >
+            {eyebrow}
+          </span>
         </p>
       </Reveal>
       <h2
         className={cn(
-          "mt-5 font-display text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.04] font-medium tracking-[-0.04em]",
-          tone === "light" ? "text-ink" : "text-white",
+          "mt-6 font-display text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.02] font-extrabold tracking-[-0.03em] uppercase",
+          tone === "light" ? "text-nb-black" : "text-nb-bg",
         )}
       >
         <RevealWords text={title} />
@@ -49,7 +48,7 @@ export function SectionHeading({
             className={cn(
               "mt-5 text-[1.0625rem] leading-relaxed text-pretty",
               center && "mx-auto max-w-2xl",
-              tone === "light" ? "text-muted" : "text-white/60",
+              tone === "light" ? "text-nb-muted" : "text-nb-bg/70",
             )}
           >
             {description}

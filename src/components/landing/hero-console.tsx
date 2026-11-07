@@ -46,24 +46,21 @@ export function HeroConsole() {
   }, [inView]);
 
   return (
-    <div
-      ref={ref}
-      className="relative rounded-[30px] border border-white/80 bg-white/60 p-2 shadow-float backdrop-blur-xl"
-    >
-      <div className="overflow-hidden rounded-[24px] border border-line/80 bg-white">
+    <div ref={ref} className="relative border-[4px] border-nb-black bg-nb-bg p-2 shadow-nb-xl">
+      <div className="overflow-hidden border-[3px] border-nb-black bg-nb-surface">
         {/* window chrome */}
-        <div className="flex items-center gap-3 border-b border-line/70 px-4 py-3">
+        <div className="flex items-center gap-3 border-b-[3px] border-nb-black bg-nb-yellow px-4 py-3">
           <div className="flex gap-1.5" aria-hidden>
-            <span className="size-2.5 rounded-full bg-line" />
-            <span className="size-2.5 rounded-full bg-line" />
-            <span className="size-2.5 rounded-full bg-line" />
+            <span className="size-3 border-[2px] border-nb-black bg-nb-pink" />
+            <span className="size-3 border-[2px] border-nb-black bg-nb-orange" />
+            <span className="size-3 border-[2px] border-nb-black bg-nb-green" />
           </div>
-          <div className="mx-auto flex min-w-0 items-center gap-2 rounded-full bg-canvas px-3 py-1 text-[11px] text-muted ring-1 ring-line/70">
-            <ShieldCheck className="size-3 shrink-0 text-brand-teal" />
+          <div className="mx-auto flex min-w-0 items-center gap-2 border-[2px] border-nb-black bg-nb-surface px-3 py-1 font-mono text-[11px] text-nb-black">
+            <ShieldCheck className="size-3 shrink-0" />
             <span className="truncate">app.unmorph.io/verify/VRF-20931</span>
           </div>
-          <span className="hidden items-center gap-1.5 rounded-full bg-brand-cyan/10 px-2.5 py-1 text-[11px] font-medium text-brand-teal sm:inline-flex">
-            <span className="size-1.5 animate-pulse rounded-full bg-brand-aqua" />
+          <span className="hidden items-center gap-1.5 border-[2px] border-nb-black bg-nb-black px-2.5 py-1 font-heading text-[11px] font-bold uppercase tracking-wide text-nb-bg sm:inline-flex">
+            <span className="size-2 animate-pulse bg-nb-green" />
             Live
           </span>
         </div>
@@ -71,23 +68,14 @@ export function HeroConsole() {
         <div className="grid gap-0 md:grid-cols-[1.35fr_1fr]">
           {/* scanned image */}
           <div className="relative p-3 sm:p-4">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-canvas">
+            <div className="relative aspect-[4/3] overflow-hidden border-[3px] border-nb-black bg-nb-bg">
               <Landscape variant="glacier" title="Registered photograph being verified" />
-
-              {/* fingerprint mesh */}
-              <motion.div
-                aria-hidden
-                className="absolute inset-0 [background-image:radial-gradient(rgb(255_255_255/0.75)_1px,transparent_1.4px)] [background-size:14px_14px] mix-blend-overlay"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: inView && !done ? 0.9 : 0 }}
-                transition={{ duration: 0.8 }}
-              />
 
               {/* scan beam */}
               {!done && inView && (
                 <div aria-hidden className="absolute inset-x-0 top-0 h-[10%] animate-scan">
-                  <div className="h-full bg-gradient-to-b from-transparent via-brand-cyan/25 to-brand-cyan/50" />
-                  <div className="h-px bg-brand-cyan shadow-[0_0_18px_2px_rgb(6_214_255/0.9)]" />
+                  <div className="h-full bg-nb-yellow/35" />
+                  <div className="h-[3px] bg-nb-black" />
                 </div>
               )}
 
@@ -101,14 +89,16 @@ export function HeroConsole() {
                     initial={{ opacity: 0, scale: 0.6, y: 12 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                    className="absolute right-3 bottom-3 flex items-center gap-2 rounded-2xl bg-white/85 py-2 pr-3.5 pl-2 shadow-float ring-1 ring-white backdrop-blur-md sm:right-4 sm:bottom-4"
+                    className="absolute right-3 bottom-3 flex items-center gap-2.5 border-[3px] border-nb-black bg-nb-green py-2 pr-3.5 pl-2 shadow-nb sm:right-4 sm:bottom-4"
                   >
-                    <span className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-brand-cyan to-brand-teal text-white shadow-[0_6px_16px_-4px_rgb(14_116_144/0.6)]">
+                    <span className="grid size-9 place-items-center border-[2px] border-nb-black bg-nb-black text-nb-green">
                       <ShieldCheck className="size-4.5" />
                     </span>
                     <span className="text-left leading-tight">
-                      <span className="block text-[12px] font-semibold text-ink">Authentic</span>
-                      <span className="block text-[11px] text-muted">
+                      <span className="block font-heading text-[12px] font-bold uppercase text-nb-black">
+                        Authentic
+                      </span>
+                      <span className="block text-[11px] text-nb-black/70">
                         Matches registered original
                       </span>
                     </span>
@@ -119,13 +109,15 @@ export function HeroConsole() {
           </div>
 
           {/* integrity report */}
-          <div className="flex flex-col border-t border-line/70 p-4 text-left md:border-t-0 md:border-l md:p-5">
+          <div className="flex flex-col border-t-[3px] border-nb-black p-4 text-left md:border-t-0 md:border-l-[3px] md:p-5">
             <div className="flex items-baseline justify-between">
-              <p className="font-display text-[13px] font-semibold text-ink">Integrity report</p>
-              <p className="text-[11px] text-muted tabular-nums">summit-press-photo.jpg</p>
+              <p className="font-display text-[14px] font-extrabold uppercase tracking-tight text-nb-black">
+                Integrity report
+              </p>
+              <p className="font-mono text-[11px] text-nb-muted">summit-press-photo.jpg</p>
             </div>
 
-            <ul className="mt-3 space-y-1.5">
+            <ul className="mt-4 space-y-2">
               {checks.map((check, i) => {
                 const state = stage > i + 1 ? "done" : stage === i + 1 ? "running" : "idle";
                 const Icon = check.icon;
@@ -133,25 +125,29 @@ export function HeroConsole() {
                   <li
                     key={check.label}
                     className={cn(
-                      "flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors duration-500",
-                      state === "running" && "bg-brand-cyan/[0.07]",
+                      "flex items-center gap-3 border-[2px] px-2.5 py-2 transition-colors duration-300",
+                      state === "running"
+                        ? "border-nb-black bg-nb-yellow"
+                        : state === "done"
+                          ? "border-nb-black bg-nb-surface"
+                          : "border-nb-black/20 bg-transparent",
                     )}
                   >
                     <span
                       className={cn(
-                        "grid size-7 shrink-0 place-items-center rounded-lg transition-colors duration-500",
+                        "grid size-7 shrink-0 place-items-center border-[2px] transition-colors duration-300",
                         state === "done"
-                          ? "bg-brand-teal/10 text-brand-teal"
-                          : "bg-canvas text-muted",
+                          ? "border-nb-black bg-nb-green text-nb-black"
+                          : "border-nb-black/30 bg-nb-bg text-nb-muted",
                       )}
                     >
                       <Icon className="size-3.5" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[12.5px] font-medium text-ink">
+                      <span className="block font-heading text-[12px] font-bold uppercase text-nb-black">
                         {check.label}
                       </span>
-                      <span className="block truncate font-mono text-[10.5px] text-muted">
+                      <span className="block truncate font-mono text-[10.5px] text-nb-muted">
                         {check.value}
                       </span>
                     </span>
@@ -163,7 +159,7 @@ export function HeroConsole() {
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, ease: EASE }}
-                            className="inline-flex items-center gap-1 text-[11px] font-medium text-brand-teal"
+                            className="inline-flex items-center gap-1 font-heading text-[10px] font-bold uppercase text-nb-black"
                           >
                             <CircleCheck className="size-3.5" />
                             {check.result}
@@ -174,7 +170,7 @@ export function HeroConsole() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0, y: -6 }}
-                            className="inline-flex items-center text-muted"
+                            className="inline-flex items-center text-nb-black"
                           >
                             <LoaderCircle className="size-3.5 animate-spin" />
                           </motion.span>
@@ -182,7 +178,7 @@ export function HeroConsole() {
                           <motion.span
                             key="idle"
                             exit={{ opacity: 0 }}
-                            className="h-1.5 w-8 rounded-full bg-line"
+                            className="h-[3px] w-8 bg-nb-black/25"
                           />
                         )}
                       </AnimatePresence>
@@ -193,14 +189,14 @@ export function HeroConsole() {
             </ul>
 
             <div className="mt-auto pt-4">
-              <div className="rounded-2xl bg-canvas p-3.5 ring-1 ring-line/70">
-                <div className="flex items-center justify-between text-[11px] text-muted">
+              <div className="border-[3px] border-nb-black bg-nb-bg p-3.5">
+                <div className="flex items-center justify-between font-heading text-[11px] font-bold uppercase tracking-wide text-nb-black">
                   <span>Confidence</span>
-                  <span className="font-medium text-ink tabular-nums">{done ? "99.4%" : "—"}</span>
+                  <span className="tabular-nums">{done ? "99.4%" : "—"}</span>
                 </div>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand-cyan/15">
+                <div className="mt-2 h-3 overflow-hidden border-[2px] border-nb-black bg-nb-surface">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-brand-teal via-brand-aqua to-brand-cyan"
+                    className="h-full bg-nb-green"
                     initial={{ width: "0%" }}
                     animate={{
                       width: inView
@@ -220,7 +216,7 @@ export function HeroConsole() {
 }
 
 function Brackets({ active, done }: { active: boolean; done: boolean }) {
-  const corner = "absolute size-7 border-white/95 drop-shadow-[0_1px_4px_rgb(15_23_42/0.25)]";
+  const corner = "absolute size-7 border-nb-yellow";
   return (
     <motion.div
       aria-hidden
@@ -229,10 +225,10 @@ function Brackets({ active, done }: { active: boolean; done: boolean }) {
       animate={active ? { opacity: 1, scale: done ? 0.97 : 1 } : {}}
       transition={{ duration: 0.9, ease: EASE }}
     >
-      <span className={cn(corner, "top-4 left-4 rounded-tl-xl border-t-2 border-l-2")} />
-      <span className={cn(corner, "top-4 right-4 rounded-tr-xl border-t-2 border-r-2")} />
-      <span className={cn(corner, "bottom-4 left-4 rounded-bl-xl border-b-2 border-l-2")} />
-      <span className={cn(corner, "right-4 bottom-4 rounded-br-xl border-r-2 border-b-2")} />
+      <span className={cn(corner, "top-4 left-4 border-t-[4px] border-l-[4px]")} />
+      <span className={cn(corner, "top-4 right-4 border-t-[4px] border-r-[4px]")} />
+      <span className={cn(corner, "bottom-4 left-4 border-b-[4px] border-l-[4px]")} />
+      <span className={cn(corner, "right-4 bottom-4 border-r-[4px] border-b-[4px]")} />
     </motion.div>
   );
 }

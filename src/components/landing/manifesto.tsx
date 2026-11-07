@@ -18,13 +18,14 @@ export function Manifesto() {
   return (
     <section aria-label="Why UnMorph" className="relative px-5 py-24 sm:px-6 sm:py-36">
       <div className="mx-auto max-w-5xl">
-        <p className="mb-8 flex items-center gap-3 text-[12px] font-semibold tracking-[0.22em] text-brand-teal uppercase">
-          <span className="h-px w-8 bg-brand-teal/60" />
-          Why it matters
+        <p className="mb-8 flex">
+          <span className="border-[3px] border-nb-black bg-nb-yellow px-3 py-1 font-heading text-[12px] font-bold tracking-[0.18em] text-nb-black uppercase shadow-nb-sm">
+            Why it matters
+          </span>
         </p>
         <p
           ref={ref}
-          className="font-display text-[clamp(1.75rem,4.2vw,3.25rem)] leading-[1.16] font-semibold tracking-[-0.03em] text-ink"
+          className="font-display text-[clamp(1.6rem,3.8vw,2.85rem)] leading-[1.2] font-extrabold tracking-[-0.03em] text-nb-black uppercase"
         >
           <span className="sr-only">{TEXT}</span>
           <span aria-hidden>
@@ -62,7 +63,11 @@ function Word({
     <>
       <motion.span
         style={{ opacity, y }}
-        className={highlight ? "inline-block text-gradient-brand" : "inline-block"}
+        className={
+          highlight
+            ? "mb-1 inline-block border-[3px] border-nb-black bg-nb-yellow px-1.5 shadow-nb-sm"
+            : "inline-block"
+        }
       >
         {children}
       </motion.span>{" "}

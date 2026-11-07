@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { Providers } from "@/app/providers";
 import { site } from "@/lib/site";
-import { inter, jakarta } from "./fonts";
+import { inter, spaceGrotesk, spaceMono, syne } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,13 +27,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F8FAFC",
+  themeColor: "#FFFDF5",
   colorScheme: "light",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${inter.variable} h-full`}>
+    <html
+      lang="en"
+      className={`${syne.variable} ${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} h-full`}
+    >
       <body className="min-h-full">
         <Providers>
           <MotionProvider>{children}</MotionProvider>
