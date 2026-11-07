@@ -1,21 +1,41 @@
-import localFont from "next/font/local";
+import { Syne, Space_Grotesk, Inter, Space_Mono } from "next/font/google";
 
 /**
- * Brand typefaces, self-hosted from /src/fonts (SIL OFL 1.1 — licences alongside).
- * Plus Jakarta Sans → headlines / branding / UI. Inter → body / content.
+ * Neubrutalist type stack.
+ *
+ * Syne (800)          → display / hero headlines. Assertive geometry.
+ * Space Grotesk (700) → section headings and UI labels.
+ * Inter (400/700)     → body copy.
+ * Space Mono (400/700) → every technical string: hashes, keys, addresses, JSON.
  */
-export const jakarta = localFont({
-  src: "../fonts/PlusJakartaSans-Variable.woff2",
-  variable: "--font-jakarta",
-  weight: "200 800",
+export const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-syne",
+  weight: ["700", "800"],
   display: "swap",
   preload: true,
 });
 
-export const inter = localFont({
-  src: "../fonts/Inter-Variable.woff2",
+export const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  weight: ["500", "700"],
+  display: "swap",
+  preload: true,
+});
+
+export const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-inter",
-  weight: "100 900",
+  weight: ["400", "500", "700"],
+  display: "swap",
+  preload: true,
+});
+
+export const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
   display: "swap",
   preload: true,
 });

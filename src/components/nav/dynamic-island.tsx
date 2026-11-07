@@ -37,12 +37,10 @@ type Size = { width: number; height: number };
 const subscribeNoop = () => () => {};
 
 /**
- * The floating "dynamic island" navigation.
- *
- * It boots as a tiny logo pill, springs open once hydrated, collapses into a
- * compact status pill (logo + scroll ring + current section) while you scroll
- * down, and re-expands on scroll-up, hover or focus. On small screens the pill
- * morphs into a full menu sheet.
+ * The primary navigation bar — a hard-edged black slab that resizes between
+ * states. Boots as a logo block, springs open once hydrated, collapses to a
+ * status block (scroll ring + current section) on scroll, and becomes a full
+ * menu sheet on small screens.
  */
 export function DynamicIsland({ pageLabel }: { pageLabel?: string }) {
   const pathname = usePathname();
@@ -131,28 +129,15 @@ export function DynamicIsland({ pageLabel }: { pageLabel?: string }) {
           if (!e.currentTarget.contains(e.relatedTarget as Node)) setEngaged(false);
         }}
         initial={false}
-        animate={
-          size
-            ? { width: size.width, height: size.height, borderRadius: mode === "menu" ? 28 : 26 }
-            : undefined
-        }
+        animate={size ? { width: size.width, height: size.height } : undefined}
         transition={ISLAND_SPRING}
-        style={{ width: size?.width ?? 52, height: size?.height ?? 52, borderRadius: 26 }}
-        className={cn(
-          "pointer-events-auto relative overflow-hidden text-white shadow-island ring-1 ring-white/10 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300",
-          mode === "menu" ? "bg-ink" : "bg-ink/[0.92]",
-        )}
+        style={{ width: size?.width ?? 56, height: size?.height ?? 56 }}
+        className="pointer-events-auto relative overflow-hidden border-[3px] border-nb-black bg-nb-black text-nb-bg shadow-nb"
       >
-        {/* top sheen */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"
-        />
-
         <AnimatePresence initial={false}>
           {mode === "boot" && (
             <Measured key="boot" onSize={setSize}>
-              <div className="grid size-[52px] place-items-center">
+              <div className="grid size-[50px] place-items-center">
                 <LogoMark size={24} priority />
               </div>
             </Measured>
@@ -160,9 +145,9 @@ export function DynamicIsland({ pageLabel }: { pageLabel?: string }) {
 
           {mode === "expanded" && (
             <Measured key="expanded" onSize={setSize}>
-              <div className="flex h-[52px] items-center gap-1 pr-1.5 pl-4">
+              <div className="flex h-[50px] items-center gap-1 pr-1.5 pl-4">
                 <IslandBrand />
-                <span aria-hidden className="mx-2.5 h-5 w-px bg-white/12" />
+                <span aria-hidden className="mx-2.5 h-6 w-[2px] bg-nb-bg/30" />
                 <DesktopLinks activeId={onLanding ? activeId : null} onLink={handleLink} />
                 <SignInButton className="ml-2" />
               </div>
@@ -171,24 +156,24 @@ export function DynamicIsland({ pageLabel }: { pageLabel?: string }) {
 
           {mode === "compact" && (
             <Measured key="compact" onSize={setSize}>
-              <div className="flex h-[52px] items-center gap-3 pr-1.5 pl-2">
+              <div className="flex h-[50px] items-center gap-3 pr-1.5 pl-2">
                 <ProgressRing progress={scrollYProgress} />
                 <button
                   type="button"
                   onClick={() => setEngaged(true)}
-                  className="relative flex h-10 items-center gap-2 overflow-hidden rounded-full pr-1 text-[13px] font-medium text-white/90"
+                  className="relative flex h-10 items-center gap-2 overflow-hidden pr-1 font-heading text-[13px] font-bold uppercase tracking-wide text-nb-bg"
                   aria-label={`Current section: ${label}. Expand navigation`}
                 >
-                  <span className="relative flex size-2">
-                    <span className="absolute inline-flex size-full animate-pulse-ring rounded-full bg-brand-cyan" />
-                    <span className="relative inline-flex size-2 rounded-full bg-brand-cyan" />
+                  <span className="relative flex size-2.5">
+                    <span className="absolute inline-flex size-full animate-pulse-ring bg-nb-yellow" />
+                    <span className="relative inline-flex size-2.5 bg-nb-yellow" />
                   </span>
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.span
                       key={label}
-                      initial={{ y: 14, opacity: 0, filter: "blur(4px)" }}
-                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                      exit={{ y: -14, opacity: 0, filter: "blur(4px)" }}
+                      initial={{ y: 14, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -14, opacity: 0 }}
                       transition={{ duration: 0.35, ease: CONTENT_EASE }}
                       className="whitespace-nowrap"
                     >
@@ -203,7 +188,7 @@ export function DynamicIsland({ pageLabel }: { pageLabel?: string }) {
 
           {mode === "mobile" && (
             <Measured key="mobile" onSize={setSize}>
-              <div className="flex h-[52px] items-center gap-2 pr-1.5 pl-4">
+              <div className="flex h-[50px] items-center gap-2 pr-1.5 pl-4">
                 <IslandBrand />
                 <span className="w-3" />
                 <SignInButton size="sm" />
@@ -212,7 +197,7 @@ export function DynamicIsland({ pageLabel }: { pageLabel?: string }) {
                   onClick={() => setMenuOpen(true)}
                   aria-expanded={false}
                   aria-label="Open menu"
-                  className="grid size-10 place-items-center rounded-full bg-white/[0.08] text-white transition-colors hover:bg-white/15"
+                  className="grid size-10 place-items-center border-[2px] border-nb-bg text-nb-bg transition-colors hover:bg-nb-yellow hover:text-nb-black"
                 >
                   <Menu className="size-[18px]" />
                 </button>
@@ -262,9 +247,9 @@ function Measured({
       ref={ref}
       className="absolute top-0 left-1/2 w-max"
       style={{ x: "-50%" }}
-      initial={{ opacity: 0, scale: 0.94, filter: "blur(6px)" }}
-      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      exit={{ opacity: 0, scale: 0.94, filter: "blur(6px)", transition: { duration: 0.18 } }}
+      initial={{ opacity: 0, scale: 0.94 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.94, transition: { duration: 0.18 } }}
       transition={{ duration: 0.38, ease: CONTENT_EASE, delay: 0.04 }}
     >
       {children}
@@ -274,9 +259,11 @@ function Measured({
 
 function IslandBrand() {
   return (
-    <Link href="/" aria-label="UnMorph home" className="flex items-center gap-2 rounded-full">
+    <Link href="/" aria-label="UnMorph home" className="flex items-center gap-2">
       <LogoMark size={22} />
-      <span className="font-display text-[15px] font-medium tracking-[-0.02em]">UnMorph</span>
+      <span className="font-display text-[16px] font-extrabold uppercase tracking-tight">
+        UnMorph
+      </span>
     </Link>
   );
 }
@@ -286,13 +273,13 @@ function SignInButton({ size = "md", className }: { size?: "sm" | "md"; classNam
     <Link
       href="/sign-in"
       className={cn(
-        "group inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand-cyan font-semibold text-ink transition-[background-color,box-shadow] duration-300 hover:bg-white hover:shadow-[0_0_24px_-4px_rgb(6_214_255/0.8)]",
-        size === "md" ? "h-10 px-4 text-[13px]" : "h-9 px-3.5 text-[12.5px]",
+        "group inline-flex shrink-0 items-center gap-1.5 border-[2px] border-nb-black bg-nb-yellow font-heading font-bold uppercase tracking-wide text-nb-black shadow-[3px_3px_0_0_#FFFDF5] transition-all duration-100 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#FFFDF5] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
+        size === "md" ? "h-10 px-4 text-[13px]" : "h-9 px-3.5 text-[12px]",
         className,
       )}
     >
       Sign in
-      <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+      <ArrowRight className="size-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
     </Link>
   );
 }
@@ -304,40 +291,25 @@ function DesktopLinks({
   activeId: string | null;
   onLink: (e: React.MouseEvent<HTMLAnchorElement>, id: string) => void;
 }) {
-  const [hovered, setHovered] = useState<string | null>(null);
-
   return (
-    <ul className="flex items-center" onPointerLeave={() => setHovered(null)}>
+    <ul className="flex items-center gap-1">
       {navLinks.map((link) => {
         const isActive = activeId === link.id;
         return (
-          <li key={link.id} className="relative">
+          <li key={link.id}>
             <Link
               href={`/#${link.id}`}
               onClick={(e) => onLink(e, link.id)}
-              onPointerEnter={() => setHovered(link.id)}
               aria-current={isActive ? "true" : undefined}
               className={cn(
-                "relative z-10 flex h-9 items-center rounded-full px-3.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-200",
-                isActive ? "text-white" : "text-white/60 hover:text-white",
+                "flex h-9 items-center border-[2px] px-3 font-heading text-[12px] font-bold uppercase tracking-wide whitespace-nowrap transition-colors duration-150",
+                isActive
+                  ? "border-nb-black bg-nb-yellow text-nb-black"
+                  : "border-transparent text-nb-bg/70 hover:border-nb-bg hover:text-nb-bg",
               )}
             >
               {link.label}
-              {isActive && (
-                <motion.span
-                  layoutId="island-active-dot"
-                  className="absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-brand-cyan"
-                  transition={{ type: "spring", stiffness: 500, damping: 36 }}
-                />
-              )}
             </Link>
-            {hovered === link.id && (
-              <motion.span
-                layoutId="island-hover"
-                className="absolute inset-0 rounded-full bg-white/[0.08]"
-                transition={{ type: "spring", stiffness: 500, damping: 40 }}
-              />
-            )}
           </li>
         );
       })}
@@ -356,20 +328,20 @@ function MobileMenu({
 }) {
   return (
     <div className="w-[min(calc(100vw-24px),400px)]">
-      <div className="flex h-[52px] items-center justify-between pr-1.5 pl-4">
+      <div className="flex h-[50px] items-center justify-between border-b-[2px] border-nb-bg/30 pr-1.5 pl-4">
         <IslandBrand />
         <button
           type="button"
           onClick={onClose}
           aria-expanded
           aria-label="Close menu"
-          className="grid size-10 place-items-center rounded-full bg-white/[0.08] transition-colors hover:bg-white/15"
+          className="grid size-10 place-items-center border-[2px] border-nb-bg transition-colors hover:bg-nb-pink hover:text-nb-black"
         >
           <X className="size-[18px]" />
         </button>
       </div>
 
-      <ul className="px-2 pt-1">
+      <ul className="space-y-1.5 p-2 pt-3">
         {navLinks.map((link, i) => (
           <motion.li
             key={link.id}
@@ -381,27 +353,21 @@ function MobileMenu({
               href={`/#${link.id}`}
               onClick={(e) => onLink(e, link.id)}
               className={cn(
-                "flex items-center justify-between rounded-2xl px-3 py-3.5 text-[15px] font-medium transition-colors hover:bg-white/[0.06]",
-                activeId === link.id ? "text-white" : "text-white/70",
+                "flex items-center justify-between border-[2px] px-3 py-3 font-heading text-[14px] font-bold uppercase tracking-wide transition-colors",
+                activeId === link.id
+                  ? "border-nb-black bg-nb-yellow text-nb-black"
+                  : "border-nb-bg/40 text-nb-bg hover:border-nb-bg hover:bg-nb-bg hover:text-nb-black",
               )}
             >
-              <span className="flex items-center gap-3">
-                <span
-                  className={cn(
-                    "size-1.5 rounded-full transition-colors",
-                    activeId === link.id ? "bg-brand-cyan" : "bg-white/20",
-                  )}
-                />
-                {link.label}
-              </span>
-              <ArrowUpRight className="size-4 text-white/40" />
+              {link.label}
+              <ArrowUpRight className="size-4" />
             </Link>
           </motion.li>
         ))}
       </ul>
 
       <motion.div
-        className="grid gap-2 p-2 pt-3"
+        className="grid gap-2 p-2 pt-1"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: CONTENT_EASE, delay: 0.28 }}
@@ -409,14 +375,14 @@ function MobileMenu({
         <Link
           href="/sign-in"
           onClick={onClose}
-          className="flex h-12 items-center justify-center gap-2 rounded-[20px] bg-brand-cyan text-[15px] font-semibold text-ink"
+          className="flex h-12 items-center justify-center gap-2 border-[2px] border-nb-black bg-nb-yellow font-heading text-[14px] font-bold uppercase tracking-wide text-nb-black"
         >
           Sign in <ArrowRight className="size-4" />
         </Link>
         <Link
           href="/dashboard"
           onClick={onClose}
-          className="flex h-12 items-center justify-center rounded-[20px] bg-white/[0.06] text-[15px] font-medium text-white/80"
+          className="flex h-12 items-center justify-center border-[2px] border-nb-bg font-heading text-[14px] font-bold uppercase tracking-wide text-nb-bg transition-colors hover:bg-nb-bg hover:text-nb-black"
         >
           Open dashboard
         </Link>
@@ -430,28 +396,15 @@ function ProgressRing({ progress }: { progress: MotionValue<number> }) {
   return (
     <Link href="/" aria-label="UnMorph home" className="relative grid size-10 place-items-center">
       <svg viewBox="0 0 40 40" className="absolute inset-0 -rotate-90" aria-hidden>
-        <defs>
-          <linearGradient id="island-ring" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#06D6FF" />
-            <stop offset="100%" stopColor="#00B3E6" />
-          </linearGradient>
-        </defs>
-        <circle
-          cx="20"
-          cy="20"
-          r="18"
-          fill="none"
-          stroke="rgb(255 255 255 / 0.1)"
-          strokeWidth="2"
-        />
+        <circle cx="20" cy="20" r="17" fill="none" stroke="#FFFDF5" strokeOpacity="0.25" strokeWidth="3" />
         <motion.circle
           cx="20"
           cy="20"
-          r="18"
+          r="17"
           fill="none"
-          stroke="url(#island-ring)"
-          strokeWidth="2"
-          strokeLinecap="round"
+          stroke="#FFD23F"
+          strokeWidth="3"
+          strokeLinecap="butt"
           style={{ pathLength }}
         />
       </svg>

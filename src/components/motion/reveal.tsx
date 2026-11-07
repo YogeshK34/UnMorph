@@ -8,15 +8,13 @@ export const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 type RevealProps = HTMLMotionProps<"div"> & {
   delay?: number;
   y?: number;
-  blur?: boolean;
   once?: boolean;
 };
 
-/** Fades + rises (and de-blurs) its children the first time they enter view. */
+/** Fades + rises its children the first time they enter view. */
 export function Reveal({
   delay = 0,
   y = 24,
-  blur = true,
   once = true,
   className,
   children,
@@ -24,8 +22,8 @@ export function Reveal({
 }: RevealProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y, filter: blur ? "blur(8px)" : "blur(0px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, margin: "0px 0px -12% 0px" }}
       transition={{ duration: 0.9, ease: EASE_OUT_EXPO, delay }}
       className={cn(className)}
@@ -77,11 +75,10 @@ export function RevealWords({
           <motion.span
             className={cn("inline-block will-change-transform", wordClassName)}
             variants={{
-              hidden: { y: "105%", opacity: 0, filter: "blur(6px)" },
+              hidden: { y: "105%", opacity: 0 },
               show: {
                 y: "0%",
                 opacity: 1,
-                filter: "blur(0px)",
                 transition: { duration: 0.95, ease: EASE_OUT_EXPO },
               },
             }}

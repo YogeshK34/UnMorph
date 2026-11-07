@@ -76,11 +76,11 @@ export function HowItWorks() {
           <div ref={stepsRef} className="relative">
             <div
               aria-hidden
-              className="absolute top-2 bottom-2 left-[15px] hidden w-px bg-line lg:block"
+              className="absolute top-2 bottom-2 left-[15px] hidden w-[3px] bg-nb-black/15 lg:block"
             >
               <motion.div
                 style={{ scaleY: rail }}
-                className="h-full w-full origin-top bg-gradient-to-b from-brand-cyan via-brand-aqua to-brand-teal"
+                className="h-full w-full origin-top bg-nb-black"
               />
             </div>
 
@@ -93,10 +93,8 @@ export function HowItWorks() {
                   <span
                     aria-hidden
                     className={cn(
-                      "absolute top-1/2 left-0 hidden size-[31px] -translate-y-1/2 place-items-center rounded-full border text-[11px] font-semibold transition-all duration-500 lg:grid",
-                      active >= i
-                        ? "border-brand-aqua bg-white text-brand-teal shadow-[0_0_0_6px_rgb(6_214_255/0.12)]"
-                        : "border-line bg-canvas text-muted",
+                      "absolute top-1/2 left-0 hidden size-[33px] -translate-y-1/2 place-items-center border-[3px] border-nb-black font-heading text-[12px] font-bold transition-colors duration-300 lg:grid",
+                      active >= i ? "bg-nb-yellow text-nb-black" : "bg-nb-surface text-nb-muted",
                     )}
                   >
                     {i + 1}
@@ -107,18 +105,18 @@ export function HowItWorks() {
                       active === i ? "lg:opacity-100" : "lg:opacity-35",
                     )}
                   >
-                    <p className="text-[12px] font-semibold tracking-[0.18em] text-brand-teal uppercase">
+                    <p className="inline-block border-[2px] border-nb-black bg-nb-black px-2.5 py-1 font-heading text-[11px] font-bold tracking-[0.16em] text-nb-bg uppercase">
                       {step.kicker}
                     </p>
-                    <h3 className="mt-3 font-display text-[1.85rem] leading-tight font-medium tracking-[-0.03em] text-ink">
+                    <h3 className="mt-4 font-display text-[1.65rem] leading-tight font-extrabold tracking-[-0.03em] text-nb-black uppercase">
                       {step.title}
                     </h3>
-                    <p className="mt-4 leading-relaxed text-muted">{step.body}</p>
+                    <p className="mt-4 leading-relaxed text-nb-muted">{step.body}</p>
                     <ul className="mt-6 space-y-2.5">
                       {step.points.map((point) => (
-                        <li key={point} className="flex items-center gap-3 text-[15px] text-ink/85">
-                          <span className="grid size-5 place-items-center rounded-full bg-brand-cyan/15 text-brand-teal">
-                            <Check className="size-3" strokeWidth={2.6} />
+                        <li key={point} className="flex items-center gap-3 text-[15px] text-nb-black">
+                          <span className="grid size-6 shrink-0 place-items-center border-[2px] border-nb-black bg-nb-green text-nb-black">
+                            <Check className="size-3" strokeWidth={3} />
                           </span>
                           {point}
                         </li>
@@ -142,9 +140,9 @@ export function HowItWorks() {
                   <motion.div
                     key={active}
                     className="absolute inset-0"
-                    initial={{ opacity: 0, y: 28, scale: 0.97, filter: "blur(8px)" }}
-                    animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -28, scale: 0.97, filter: "blur(8px)" }}
+                    initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -28, scale: 0.97 }}
                     transition={{ duration: 0.7, ease: EASE }}
                   >
                     <StepVisual index={active} />
@@ -163,8 +161,8 @@ export function HowItWorks() {
 
 function StepVisual({ index }: { index: number }) {
   return (
-    <div className="relative size-full overflow-hidden rounded-[28px] border border-white bg-gradient-to-br from-white via-white to-brand-cyan/[0.08] p-5 shadow-float">
-      <div aria-hidden className="absolute inset-0 bg-grid mask-radial opacity-50" />
+    <div className="relative size-full overflow-hidden border-[3px] border-nb-black bg-nb-surface p-5 shadow-nb">
+      <div aria-hidden className="absolute inset-0 bg-grid opacity-40" />
       {index === 0 && <RegisterVisual />}
       {index === 1 && <AnchorVisual />}
       {index === 2 && <VerifyVisual />}
@@ -180,17 +178,16 @@ const DIGEST = seededHex(1337, 64);
 function RegisterVisual() {
   return (
     <div className="relative flex h-full flex-col gap-4">
-      <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl">
+      <div className="relative min-h-0 flex-1 overflow-hidden border-[3px] border-nb-black">
         <Landscape variant="dawn" />
-        <div className="absolute inset-0 [background-image:radial-gradient(rgb(255_255_255/0.7)_1px,transparent_1.4px)] [background-size:16px_16px] mix-blend-overlay" />
-        <div className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-white/85 py-1 pr-3 pl-1 text-[11px] font-medium text-ink shadow-glass backdrop-blur-md">
-          <span className="grid size-5 place-items-center rounded-full bg-ink text-brand-cyan">
+        <div className="absolute top-3 left-3 flex items-center gap-2 border-[2px] border-nb-black bg-nb-surface py-1 pr-3 pl-1 font-heading text-[11px] font-bold uppercase text-nb-black shadow-nb-sm">
+          <span className="grid size-5 place-items-center bg-nb-black text-nb-yellow">
             <ScanFace className="size-3" />
           </span>
           Verified human · World ID
         </div>
       </div>
-      <div className="grid grid-cols-[auto_1fr] items-center gap-4 rounded-2xl bg-ink p-4 text-white">
+      <div className="grid grid-cols-[auto_1fr] items-center gap-4 border-[3px] border-nb-black bg-nb-black p-4 text-nb-bg">
         <div className="grid grid-cols-8 gap-[3px]" aria-label="Perceptual hash bit grid">
           {PHASH_BITS.map((on, i) => (
             <motion.span
@@ -198,15 +195,15 @@ function RegisterVisual() {
               initial={{ opacity: 0, scale: 0.4 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 + i * 0.008, duration: 0.3 }}
-              className={cn("size-2.5 rounded-[3px]", on ? "bg-brand-cyan" : "bg-white/10")}
+              className={cn("size-2.5", on ? "bg-nb-yellow" : "bg-nb-bg/15")}
             />
           ))}
         </div>
         <div className="min-w-0">
-          <p className="flex items-center gap-1.5 text-[11px] font-medium text-white/50">
+          <p className="flex items-center gap-1.5 font-heading text-[11px] font-bold uppercase tracking-wide text-nb-yellow">
             <FingerprintPattern className="size-3.5" /> SHA-256
           </p>
-          <p className="mt-1 font-mono text-[11px] leading-relaxed break-all text-white/85">
+          <p className="mt-1 font-mono text-[11px] leading-relaxed break-all text-nb-green">
             <TypeOut text={DIGEST} />
           </p>
         </div>
@@ -236,22 +233,22 @@ const layers = [
     icon: Database,
     name: "Arkiv",
     detail: "Integrity record · ark_7f3a…91c2",
-    tone: "bg-ink text-white",
-    accent: "text-brand-cyan",
+    tone: "bg-nb-black text-nb-bg",
+    accent: "text-nb-yellow",
   },
   {
     icon: HardDrive,
     name: "0G Storage",
     detail: "Evidence bundle · 0x4be1…09fa",
-    tone: "bg-white text-ink",
-    accent: "text-brand-teal",
+    tone: "bg-nb-blue text-nb-black",
+    accent: "text-nb-black",
   },
   {
     icon: ScanFace,
     name: "World ID",
     detail: "Attestation · nullifier 0x91c…2d",
-    tone: "bg-white/80 text-ink",
-    accent: "text-brand-teal",
+    tone: "bg-nb-yellow text-nb-black",
+    accent: "text-nb-black",
   },
 ];
 
@@ -269,14 +266,14 @@ function AnchorVisual() {
               transition={{ delay: 0.15 + i * 0.12, type: "spring", stiffness: 160, damping: 20 }}
               style={{ zIndex: 3 - i, transformStyle: "preserve-3d" }}
               className={cn(
-                "absolute inset-x-0 top-0 flex h-[120px] items-start gap-3 rounded-[22px] border border-white/70 p-5 shadow-float",
+                "absolute inset-x-0 top-0 flex h-[120px] items-start gap-3 border-[3px] border-nb-black p-5 shadow-nb",
                 layer.tone,
               )}
             >
-              <Icon className={cn("size-5", layer.accent)} />
+              <Icon className={cn("size-5", layer.accent)} strokeWidth={2.5} />
               <div>
-                <p className="font-display text-[15px] font-medium">{layer.name}</p>
-                <p className="mt-0.5 font-mono text-[11px] opacity-60">{layer.detail}</p>
+                <p className="font-display text-[15px] font-extrabold uppercase">{layer.name}</p>
+                <p className="mt-0.5 font-mono text-[11px] opacity-70">{layer.detail}</p>
               </div>
             </motion.div>
           );
@@ -286,20 +283,20 @@ function AnchorVisual() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
-        className="relative overflow-hidden rounded-2xl border border-line/80 bg-white/90 p-4 font-mono text-[11px] leading-relaxed text-ink/80 backdrop-blur"
+        className="relative overflow-hidden border-[3px] border-nb-black bg-nb-black p-4 font-mono text-[11px] leading-relaxed text-nb-green shadow-nb"
       >
-        <span className="text-muted">{"// arkiv record"}</span>
+        <span className="text-nb-bg/45">{"// arkiv record"}</span>
         {"\n{"}
         {"\n  "}
-        <span className="text-brand-teal">&quot;sha256&quot;</span>: &quot;e3b0c4…7b855&quot;,
+        <span className="text-nb-yellow">&quot;sha256&quot;</span>: &quot;e3b0c4…7b855&quot;,
         {"\n  "}
-        <span className="text-brand-teal">&quot;phash&quot;</span>: &quot;9f2c4ba1d0e7a71e&quot;,
+        <span className="text-nb-yellow">&quot;phash&quot;</span>: &quot;9f2c4ba1d0e7a71e&quot;,
         {"\n  "}
-        <span className="text-brand-teal">&quot;owner&quot;</span>: &quot;0x7a3c…e91f&quot;,
+        <span className="text-nb-yellow">&quot;owner&quot;</span>: &quot;0x7a3c…e91f&quot;,
         {"\n  "}
-        <span className="text-brand-teal">&quot;storage&quot;</span>: &quot;0g://0x4be1…09fa&quot;,
+        <span className="text-nb-yellow">&quot;storage&quot;</span>: &quot;0g://0x4be1…09fa&quot;,
         {"\n  "}
-        <span className="text-brand-teal">&quot;human&quot;</span>: true
+        <span className="text-nb-yellow">&quot;human&quot;</span>: true
         {"\n}"}
       </motion.pre>
     </div>
@@ -310,13 +307,13 @@ function VerifyVisual() {
   return (
     <div className="relative flex h-full flex-col gap-4">
       <div className="grid min-h-0 flex-1 grid-cols-2 gap-3">
-        <figure className="relative overflow-hidden rounded-2xl">
+        <figure className="relative overflow-hidden border-[3px] border-nb-black">
           <Landscape variant="glacier" />
-          <figcaption className="absolute top-2.5 left-2.5 rounded-full bg-white/85 px-2.5 py-1 text-[10.5px] font-semibold text-ink backdrop-blur">
+          <figcaption className="absolute top-2.5 left-2.5 border-[2px] border-nb-black bg-nb-green px-2.5 py-1 font-heading text-[10.5px] font-bold uppercase text-nb-black">
             Registered
           </figcaption>
         </figure>
-        <figure className="relative overflow-hidden rounded-2xl">
+        <figure className="relative overflow-hidden border-[3px] border-nb-black">
           <Landscape variant="glacier" tampered />
           {TAMPER_REGIONS.map((r, i) => (
             <motion.span

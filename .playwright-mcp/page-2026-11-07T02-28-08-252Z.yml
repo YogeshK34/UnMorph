@@ -1,0 +1,462 @@
+- generic [active] [ref=f1e1]:
+  - banner:
+    - navigation "Primary" [ref=f1e2]
+  - main [ref=f1e6]:
+    - generic [ref=f1e7]:
+      - generic [ref=f1e8]:
+        - generic [ref=f1e10]:
+          - generic [ref=f1e11]: New
+          - text: Image integrity layer, now in private beta
+        - heading "Prevent morphing. Prove authenticity." [level=1] [ref=f1e12]:
+          - generic [ref=f1e13]:
+            - generic [ref=f1e14]: Prevent morphing.
+            - generic [ref=f1e16]: Prevent
+            - generic [ref=f1e18]: morphing.
+          - generic [ref=f1e19]:
+            - generic [ref=f1e20]: Prove authenticity.
+            - generic [ref=f1e22]: Prove
+            - generic [ref=f1e24]: authenticity.
+        - paragraph [ref=f1e25]: UnMorph fingerprints original images, anchors that proof on decentralized infrastructure, and exposes any manipulation — from subtle retouching to AI-generated alterations.
+        - generic [ref=f1e26]:
+          - link "Start verifying" [ref=f1e27] [cursor=pointer]:
+            - /url: /sign-in
+          - link "See how it works" [ref=f1e30] [cursor=pointer]:
+            - /url: /#how-it-works
+        - list [ref=f1e31]:
+          - listitem [ref=f1e32]: Authentic
+          - listitem [ref=f1e36]: Tamper-proof
+          - listitem [ref=f1e41]: Permanent
+      - generic [ref=f1e44]:
+        - generic [ref=f1e48]:
+          - generic [ref=f1e49]:
+            - generic [ref=f1e54]: app.unmorph.io/verify/VRF-20931
+            - generic [ref=f1e59]: Live
+          - generic [ref=f1e61]:
+            - img "Registered photograph being verified" [ref=f1e64]
+            - generic [ref=f1e87]:
+              - generic [ref=f1e88]:
+                - paragraph [ref=f1e89]: Integrity report
+                - paragraph [ref=f1e90]: summit-press-photo.jpg
+              - list [ref=f1e91]:
+                - listitem [ref=f1e92]:
+                  - generic [ref=f1e103]:
+                    - generic [ref=f1e104]: Perceptual fingerprint
+                    - generic [ref=f1e105]: pHash 9f2c4b…a71e
+                - listitem [ref=f1e108]:
+                  - generic [ref=f1e113]:
+                    - generic [ref=f1e114]: SHA-256 digest
+                    - generic [ref=f1e115]: e3b0c4…7b855
+                - listitem [ref=f1e118]:
+                  - generic [ref=f1e124]:
+                    - generic [ref=f1e125]: Arkiv record
+                    - generic [ref=f1e126]: ark_7f3a…91c2
+                - listitem [ref=f1e129]:
+                  - generic [ref=f1e137]:
+                    - generic [ref=f1e138]: Human attestation
+                    - generic [ref=f1e139]: World ID
+                - listitem [ref=f1e142]:
+                  - generic [ref=f1e151]:
+                    - generic [ref=f1e152]: Tamper analysis
+                    - generic [ref=f1e153]: 0 altered regions
+              - generic [ref=f1e158]:
+                - generic [ref=f1e159]: Confidence
+                - generic [ref=f1e160]: —
+        - generic [aria-hidden]:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: World ID
+                    - generic: Verified unique human
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: 0G Storage
+                    - generic: root 0x4be1…09fa · pinned
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: Anchored on Arkiv
+                    - generic: 0x7a3c…e91f · 12 Oct 2026
+    - region [ref=f1e162]:
+      - generic [ref=f1e163]:
+        - paragraph [ref=f1e164]: Integrity anchored on open infrastructure
+        - list [ref=f1e165]:
+          - listitem [ref=f1e166]:
+            - generic [ref=f1e174]:
+              - generic [ref=f1e175]: World ID
+              - generic [ref=f1e176]: Privacy-preserving proof of personhood
+          - listitem [ref=f1e177]:
+            - generic [ref=f1e183]:
+              - generic [ref=f1e184]: Arkiv
+              - generic [ref=f1e185]: Wallet-owned, queryable integrity records
+          - listitem [ref=f1e186]:
+            - generic [ref=f1e190]:
+              - generic [ref=f1e191]: 0G
+              - generic [ref=f1e192]: Decentralized storage & AI compute
+    - region "Why UnMorph" [ref=f1e193]:
+      - generic [ref=f1e194]:
+        - paragraph [ref=f1e195]: Why it matters
+        - paragraph [ref=f1e197]:
+          - generic [ref=f1e198]: Generative AI made it effortless to alter a photograph. Faces swap, evidence shifts, documents bend — and nobody can tell. UnMorph gives every original a verifiable fingerprint, so any change, however subtle, leaves a trace.
+          - generic [aria-hidden] [ref=f1e199]:
+            - generic [ref=f1e200]: Generative
+            - generic [ref=f1e201]: AI
+            - generic [ref=f1e202]: made
+            - generic [ref=f1e203]: it
+            - generic [ref=f1e204]: effortless
+            - generic [ref=f1e205]: to
+            - generic [ref=f1e206]: alter
+            - generic [ref=f1e207]: a
+            - generic [ref=f1e208]: photograph.
+            - generic [ref=f1e209]: Faces
+            - generic [ref=f1e210]: swap,
+            - generic [ref=f1e211]: evidence
+            - generic [ref=f1e212]: shifts,
+            - generic [ref=f1e213]: documents
+            - generic [ref=f1e214]: bend
+            - generic [ref=f1e215]: —
+            - generic [ref=f1e216]: and
+            - generic [ref=f1e217]: nobody
+            - generic [ref=f1e218]: can
+            - generic [ref=f1e219]: tell.
+            - generic [ref=f1e220]: UnMorph
+            - generic [ref=f1e221]: gives
+            - generic [ref=f1e222]: every
+            - generic [ref=f1e223]: original
+            - generic [ref=f1e224]: a
+            - generic [ref=f1e225]: verifiable
+            - generic [ref=f1e226]: fingerprint,
+            - generic [ref=f1e227]: so
+            - generic [ref=f1e228]: any
+            - generic [ref=f1e229]: change,
+            - generic [ref=f1e230]: however
+            - generic [ref=f1e231]: subtle,
+            - generic [ref=f1e232]: leaves
+            - generic [ref=f1e233]: a
+            - generic [ref=f1e234]: trace.
+    - generic [ref=f1e236]:
+      - generic [ref=f1e237]:
+        - paragraph [ref=f1e239]:
+          - generic [ref=f1e240]: How it works
+        - heading "From capture to proof in three steps." [level=2] [ref=f1e241]:
+          - generic [ref=f1e242]:
+            - generic [ref=f1e243]: From capture to proof in three steps.
+            - generic [ref=f1e245]: From
+            - generic [ref=f1e247]: capture
+            - generic [ref=f1e249]: to
+            - generic [ref=f1e251]: proof
+            - generic [ref=f1e253]: in
+            - generic [ref=f1e255]: three
+            - generic [ref=f1e257]: steps.
+        - paragraph [ref=f1e259]: "UnMorph turns an image into evidence: a fingerprint only the original can match, anchored where no single party can rewrite it."
+      - generic [ref=f1e260]:
+        - list [ref=f1e263]:
+          - listitem [ref=f1e264]:
+            - generic [aria-hidden] [ref=f1e265]: "1"
+            - generic [ref=f1e266]:
+              - paragraph [ref=f1e267]: 01 · Register
+              - heading "Fingerprint the original." [level=3] [ref=f1e268]
+              - paragraph [ref=f1e269]: Upload or capture an image. UnMorph computes a cryptographic SHA-256 digest and a perceptual hash that survives resizing and recompression — and, where required, binds the registration to a World ID–verified human.
+              - list [ref=f1e270]:
+                - listitem [ref=f1e271]: Cryptographic + perceptual fingerprints
+                - listitem [ref=f1e275]: Proof of personhood via World ID
+                - listitem [ref=f1e279]: Capture metadata preserved
+          - listitem [ref=f1e283]:
+            - generic [aria-hidden] [ref=f1e284]: "2"
+            - generic [ref=f1e285]:
+              - paragraph [ref=f1e286]: 02 · Anchor
+              - heading "Anchor proof on decentralized rails." [level=3] [ref=f1e287]
+              - paragraph [ref=f1e288]: The fingerprint, ownership reference and verification metadata become a wallet-owned, queryable record on Arkiv. The image and supporting evidence are stored on 0G's decentralized storage network.
+              - list [ref=f1e289]:
+                - listitem [ref=f1e290]: Wallet-owned Arkiv records
+                - listitem [ref=f1e294]: Evidence bundles on 0G Storage
+                - listitem [ref=f1e298]: Append-only integrity history
+          - listitem [ref=f1e302]:
+            - generic [aria-hidden] [ref=f1e303]: "3"
+            - generic [ref=f1e304]:
+              - paragraph [ref=f1e305]: 03 · Verify
+              - heading "Verify any copy, anywhere." [level=3] [ref=f1e306]
+              - paragraph [ref=f1e307]: Anyone can check an image against the registry. AI tamper detection on 0G compute pinpoints morphing, splicing and generative fill — down to the exact region — with a confidence score you can audit.
+              - list [ref=f1e308]:
+                - listitem [ref=f1e309]: Region-level tamper heatmaps
+                - listitem [ref=f1e313]: Auditable confidence scores
+                - listitem [ref=f1e317]: Dashboard and API access
+        - generic [ref=f1e327]:
+          - generic [ref=f1e328]: Verified human · World ID
+          - generic [ref=f1e361]:
+            - generic "Perceptual hash bit grid" [ref=f1e362]
+            - generic [ref=f1e427]:
+              - paragraph [ref=f1e428]: SHA-256
+              - paragraph [ref=f1e438]:
+                - generic [ref=f1e439]: 23ca668888a3763c9ea133746bb31a2b3c09664024594977dfa0242245322b88
+    - generic [ref=f1e442]:
+      - generic [ref=f1e443]:
+        - paragraph [ref=f1e445]:
+          - generic [ref=f1e446]: Tamper detection
+        - heading "See exactly what changed." [level=2] [ref=f1e447]:
+          - generic [ref=f1e448]:
+            - generic [ref=f1e449]: See exactly what changed.
+            - generic [ref=f1e451]: See
+            - generic [ref=f1e453]: exactly
+            - generic [ref=f1e455]: what
+            - generic [ref=f1e457]: changed.
+        - paragraph [ref=f1e459]: Drag the divider to compare a registered original with a manipulated copy. UnMorph localizes every alteration and shows the evidence behind each flag.
+      - generic [ref=f1e460]:
+        - generic [ref=f1e462]:
+          - img "Registered original" [ref=f1e464]
+          - generic [ref=f1e487]:
+            - img "Submitted copy with manipulated regions" [ref=f1e488]
+            - generic [ref=f1e516]:
+              - generic [ref=f1e517]: A · Generative fill · 97.2%
+              - generic [ref=f1e521]: B · Cloned element · 92.6%
+          - generic: Original · registered
+          - generic: Submitted copy
+          - slider "Comparison divider position" [ref=f1e525]: "50"
+        - generic [ref=f1e527]:
+          - generic [ref=f1e528]:
+            - generic [ref=f1e529]:
+              - paragraph [ref=f1e530]: Verdict
+              - paragraph [ref=f1e531]: Tampered
+            - generic [ref=f1e536]:
+              - paragraph [ref=f1e537]: Confidence
+              - paragraph [ref=f1e538]: 96.8%
+          - generic [ref=f1e539]:
+            - generic [ref=f1e540]:
+              - generic [ref=f1e541]:
+                - generic [ref=f1e542]: Fingerprint distance
+                - generic [ref=f1e543]: "0.31"
+              - paragraph [ref=f1e545]: Threshold 0.08
+            - generic [ref=f1e546]:
+              - generic [ref=f1e547]:
+                - generic [ref=f1e548]: Pixel deviation
+                - generic [ref=f1e549]: 4.8%
+              - paragraph [ref=f1e551]: Across 2 regions
+            - generic [ref=f1e552]:
+              - generic [ref=f1e553]:
+                - generic [ref=f1e554]: Noise-pattern consistency
+                - generic [ref=f1e555]: 61%
+              - paragraph [ref=f1e557]: Expected ≥ 95%
+          - generic [ref=f1e558]:
+            - paragraph [ref=f1e559]: Altered regions
+            - list [ref=f1e560]:
+              - listitem [ref=f1e561]:
+                - generic [ref=f1e562]: A
+                - generic [ref=f1e563]: Generative fill
+                - generic [ref=f1e564]: 97.2%
+              - listitem [ref=f1e565]:
+                - generic [ref=f1e566]: B
+                - generic [ref=f1e567]: Cloned element
+                - generic [ref=f1e568]: 92.6%
+          - generic [ref=f1e569] [cursor=pointer]:
+            - text: Show tamper heatmap
+            - switch "Show tamper heatmap" [checked] [ref=f1e570]
+    - generic [ref=f1e573]:
+      - generic [ref=f1e574]:
+        - paragraph [ref=f1e576]:
+          - generic [ref=f1e577]: Infrastructure
+        - heading "Trust that no single party controls." [level=2] [ref=f1e578]:
+          - generic [ref=f1e579]:
+            - generic [ref=f1e580]: Trust that no single party controls.
+            - generic [ref=f1e582]: Trust
+            - generic [ref=f1e584]: that
+            - generic [ref=f1e586]: "no"
+            - generic [ref=f1e588]: single
+            - generic [ref=f1e590]: party
+            - generic [ref=f1e592]: controls.
+        - paragraph [ref=f1e594]: UnMorph composes three open networks into one integrity layer — so proof outlives any company, server or policy change, including ours.
+      - generic [ref=f1e595]:
+        - generic [ref=f1e597]:
+          - generic [ref=f1e598]:
+            - paragraph [ref=f1e599]: World ID
+            - heading "Proof of human, not identity." [level=3] [ref=f1e606]
+            - paragraph [ref=f1e607]: Registrations can require a privacy-preserving proof that a unique human is behind them — no names, no documents, no tracking.
+          - generic [ref=f1e609]:
+            - generic [ref=f1e620]: Unique human
+            - generic [ref=f1e624]: Zero personal data
+        - generic [ref=f1e629]:
+          - generic [ref=f1e630]:
+            - paragraph [ref=f1e631]: Arkiv
+            - heading "Integrity records you own." [level=3] [ref=f1e636]
+            - paragraph [ref=f1e637]: Fingerprints, ownership references and verification history live in wallet-owned, queryable records — portable and independently auditable.
+          - list [ref=f1e639]:
+            - listitem [ref=f1e640]:
+              - generic [ref=f1e642]: ark_b522bb…180f
+              - generic [ref=f1e643]: summit-press-photo.jpg
+            - listitem [ref=f1e644]:
+              - generic [ref=f1e646]: ark_b90202…cb32
+              - generic [ref=f1e647]: harbor-evidence-0442.png
+            - listitem [ref=f1e648]:
+              - generic [ref=f1e650]: ark_7ff766…89d4
+              - generic [ref=f1e651]: id-scan-front.jpg
+            - listitem [ref=f1e652]:
+              - generic [ref=f1e654]: ark_c80e9c…d72c
+              - generic [ref=f1e655]: field-report-aurora.jpg
+            - listitem [ref=f1e656]:
+              - generic [ref=f1e658]: ark_8ffe3a…5bf5
+              - generic [ref=f1e659]: claim-7731-damage.jpg
+            - listitem [ref=f1e660]:
+              - generic [ref=f1e662]: ark_ad6cdf…437d
+              - generic [ref=f1e663]: portrait-session-12.jpg
+            - listitem [ref=f1e664]:
+              - generic [ref=f1e666]: ark_57022b…01ec
+              - generic [ref=f1e667]: newsroom-wire-5590.jpg
+            - listitem [ref=f1e668]:
+              - generic [ref=f1e670]: ark_a463af…422a
+              - generic [ref=f1e671]: passport-renewal.png
+            - listitem [ref=f1e672]:
+              - generic [ref=f1e674]: ark_b522bb…180f
+              - generic [ref=f1e675]: summit-press-photo.jpg
+            - listitem [ref=f1e676]:
+              - generic [ref=f1e678]: ark_b90202…cb32
+              - generic [ref=f1e679]: harbor-evidence-0442.png
+            - listitem [ref=f1e680]:
+              - generic [ref=f1e682]: ark_7ff766…89d4
+              - generic [ref=f1e683]: id-scan-front.jpg
+            - listitem [ref=f1e684]:
+              - generic [ref=f1e686]: ark_c80e9c…d72c
+              - generic [ref=f1e687]: field-report-aurora.jpg
+            - listitem [ref=f1e688]:
+              - generic [ref=f1e690]: ark_8ffe3a…5bf5
+              - generic [ref=f1e691]: claim-7731-damage.jpg
+            - listitem [ref=f1e692]:
+              - generic [ref=f1e694]: ark_ad6cdf…437d
+              - generic [ref=f1e695]: portrait-session-12.jpg
+            - listitem [ref=f1e696]:
+              - generic [ref=f1e698]: ark_57022b…01ec
+              - generic [ref=f1e699]: newsroom-wire-5590.jpg
+            - listitem [ref=f1e700]:
+              - generic [ref=f1e702]: ark_a463af…422a
+              - generic [ref=f1e703]: passport-renewal.png
+        - generic [ref=f1e706]:
+          - paragraph [ref=f1e707]: 0G
+          - heading "Decentralized storage & compute." [level=3] [ref=f1e710]
+          - paragraph [ref=f1e711]: Originals and evidence bundles are stored on 0G; tamper models run on its decentralized compute.
+        - generic [ref=f1e779]:
+          - generic [ref=f1e780]:
+            - paragraph [ref=f1e781]: Fingerprints
+            - heading "Two hashes, one verdict." [level=3] [ref=f1e791]
+            - paragraph [ref=f1e792]: SHA-256 proves byte-level identity. A perceptual hash recognises the image through resizing, recompression and screenshots.
+          - generic [ref=f1e793]:
+            - generic [ref=f1e794]:
+              - paragraph [ref=f1e795]:
+                - text: Perceptual
+                - generic [ref=f1e796]: survives edits
+              - paragraph [ref=f1e797]: d2cf78ed3238f9fb
+            - generic [ref=f1e798]:
+              - paragraph [ref=f1e799]:
+                - text: SHA-256
+                - generic [ref=f1e800]: exact bytes
+              - paragraph [ref=f1e801]: 5f6f61eb1888643a82c9fe9b916ba26fddbc708e
+        - generic [ref=f1e803]:
+          - generic [ref=f1e804]:
+            - paragraph [ref=f1e805]: API
+            - heading "Verify from anywhere." [level=3] [ref=f1e810]
+            - paragraph [ref=f1e811]: One call returns the verdict, confidence, regions and the on-chain record behind them.
+          - generic [ref=f1e812]: const report = await unmorph .verify(file) report.verdict // "authentic" report.confidence // 0.994 report.record // ark_7f3a…
+    - generic [ref=f1e814]:
+      - generic [ref=f1e816]:
+        - paragraph [ref=f1e818]:
+          - generic [ref=f1e819]: Use cases
+        - heading "Wherever an image is evidence." [level=2] [ref=f1e820]:
+          - generic [ref=f1e821]:
+            - generic [ref=f1e822]: Wherever an image is evidence.
+            - generic [ref=f1e824]: Wherever
+            - generic [ref=f1e826]: an
+            - generic [ref=f1e828]: image
+            - generic [ref=f1e830]: is
+            - generic [ref=f1e832]: evidence.
+        - paragraph [ref=f1e834]: "From breaking news to insurance claims, UnMorph gives teams a shared, verifiable answer to one question: is this the original?"
+      - generic [ref=f1e835]:
+        - article [ref=f1e836]:
+          - generic [ref=f1e837]: Wire photo · Authentic
+          - generic [ref=f1e864]:
+            - heading "Newsrooms & fact-checkers" [level=3] [ref=f1e869]
+            - paragraph [ref=f1e870]: Publish with provenance. Let readers confirm a photo is the exact frame your photographer captured.
+        - article [ref=f1e871]:
+          - generic [ref=f1e872]: ID portrait · Face region altered
+          - generic [ref=f1e899]:
+            - heading "Identity & KYC" [level=3] [ref=f1e905]
+            - paragraph [ref=f1e906]: Catch morphed ID portraits and face swaps before they slip into onboarding flows.
+        - article [ref=f1e907]:
+          - generic [ref=f1e908]: "Claim #7731 · 3 regions altered"
+          - generic [ref=f1e935]:
+            - heading "Legal & insurance evidence" [level=3] [ref=f1e943]
+            - paragraph [ref=f1e944]: Keep an auditable chain of integrity for claims, disputes and court submissions.
+        - article [ref=f1e945]:
+          - generic [ref=f1e946]: Portfolio · Registered original
+          - generic [ref=f1e973]:
+            - heading "Creators & brands" [level=3] [ref=f1e978]
+            - paragraph [ref=f1e979]: Prove your originals and spot unauthorised edits of your work wherever it travels.
+        - article [ref=f1e980]:
+          - generic [ref=f1e981]: Listing photo · No record found
+          - generic [ref=f1e1008]:
+            - heading "Marketplaces" [level=3] [ref=f1e1013]
+            - paragraph [ref=f1e1014]: Check that listing photos are real, current and unaltered — before buyers ever see them.
+    - generic [ref=f1e1024]:
+      - heading "Make every image provable." [level=2] [ref=f1e1025]:
+        - generic [ref=f1e1026]:
+          - generic [ref=f1e1027]: Make every image
+          - generic [ref=f1e1029]: Make
+          - generic [ref=f1e1031]: every
+          - generic [ref=f1e1033]: image
+        - generic [ref=f1e1034]:
+          - generic [ref=f1e1035]: provable.
+          - generic [ref=f1e1037]: provable.
+      - paragraph [ref=f1e1039]: Register originals, anchor proof and verify any copy in seconds. Join the private beta and bring integrity to every image you publish.
+      - generic [ref=f1e1040]:
+        - link "Start verifying" [ref=f1e1041] [cursor=pointer]:
+          - /url: /sign-in
+        - link "Explore the dashboard" [ref=f1e1044] [cursor=pointer]:
+          - /url: /dashboard
+  - contentinfo [ref=f1e1045]:
+    - generic [ref=f1e1046]:
+      - generic [ref=f1e1047]:
+        - link "UnMorph home" [ref=f1e1048] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f1e1050]: UnMorph
+        - paragraph [ref=f1e1051]: The image integrity layer. Prevent morphing, prove authenticity — on infrastructure no one can quietly rewrite.
+      - navigation "Footer — product" [ref=f1e1052]:
+        - paragraph [ref=f1e1053]: Product
+        - list [ref=f1e1054]:
+          - listitem [ref=f1e1055]:
+            - link "How it works" [ref=f1e1056] [cursor=pointer]:
+              - /url: /#how-it-works
+          - listitem [ref=f1e1057]:
+            - link "Detection" [ref=f1e1058] [cursor=pointer]:
+              - /url: /#detection
+          - listitem [ref=f1e1059]:
+            - link "Infrastructure" [ref=f1e1060] [cursor=pointer]:
+              - /url: /#infrastructure
+          - listitem [ref=f1e1061]:
+            - link "Use cases" [ref=f1e1062] [cursor=pointer]:
+              - /url: /#use-cases
+      - navigation "Footer — app" [ref=f1e1063]:
+        - paragraph [ref=f1e1064]: App
+        - list [ref=f1e1065]:
+          - listitem [ref=f1e1066]:
+            - link "Sign in" [ref=f1e1067] [cursor=pointer]:
+              - /url: /sign-in
+          - listitem [ref=f1e1068]:
+            - link "Dashboard" [ref=f1e1069] [cursor=pointer]:
+              - /url: /dashboard
+          - listitem [ref=f1e1070]:
+            - link "GitHub" [ref=f1e1071] [cursor=pointer]:
+              - /url: https://github.com/maitreya-ai/UnMorph
+    - generic [ref=f1e1072]:
+      - paragraph [ref=f1e1073]: © 2026 UnMorph. All rights reserved.
+      - list [ref=f1e1074]:
+        - listitem [ref=f1e1075]:
+          - link "Privacy" [ref=f1e1076] [cursor=pointer]:
+            - /url: /privacy
+        - listitem [ref=f1e1077]:
+          - link "Terms" [ref=f1e1078] [cursor=pointer]:
+            - /url: /terms
+    - paragraph [aria-hidden]: UnMorph
+  - button "Open Next.js Dev Tools" [ref=f1e1084] [cursor=pointer]
+  - alert [ref=f1e1088]
