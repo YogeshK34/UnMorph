@@ -1,9 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { computePHash, similarityPercent } from "@/lib/phash";
 import { findExactImage, findSimilarImages, verifyOwnership, type ArkivEntity } from "@/lib/arkiv";
+import { compareWithOriginal, type MorphCompareResult } from "@/lib/morph-service";
+import { getImageFromSwarm } from "@/lib/swarm";
 
 function isValidEthereumAddress(address: unknown): address is string {
   return typeof address === "string" && /^0x[0-9a-fA-F]{40}$/.test(address.trim());
+}
+
+/**
+ * Runs the Python morph-check service against the candidate and the matched entity's
+ * registered original (fetched from Swarm), when both are available. Never throws — a
+ * missing MORPH_SERVICE_URL, an unreadable payload, or a service failure all just mean no
+ * `morphAnalysis` is attached; the existing pHash-based verdict still stands on its own.
+ */
+async function maybeAttachMorphAnalysis(
+  entity: ArkivEntity | null | undefined,
+  candidateBuffer: Buffer,
+): Promise<{ morphAnalysis?: MorphCompareResult }> {
+  if (!process.env.MORPH_SERVICE_URL) return {};
+
+  const { swarmRef } = parseEntityPayload(entity);
+  if (!swarmRef) return {};
+
+  try {
+    const originalBuffer = await getImageFromSwarm(swarmRef);
+    const morphAnalysis = await compareWithOriginal(originalBuffer, candidateBuffer);
+    return morphAnalysis ? { morphAnalysis } : {};
+  } catch (err) {
+    console.error("morph-check analysis failed:", err);
+    return {};
+  }
 }
 
 /**
@@ -120,6 +147,7 @@ export async function POST(request: NextRequest) {
                 owner: cleanClaimer,
                 swarmRef,
                 registeredAt,
+                ...(await maybeAttachMorphAnalysis(exactMatch, imageBuffer)),
               },
             },
             { status: 200 },
@@ -134,6 +162,7 @@ export async function POST(request: NextRequest) {
                 similarityPercent: 100,
                 legitimateOwner,
                 targetImageHash: fullHash,
+                ...(await maybeAttachMorphAnalysis(exactMatch, imageBuffer)),
               },
             },
             { status: 200 },
@@ -170,6 +199,7 @@ export async function POST(request: NextRequest) {
                 owner: cleanClaimer,
                 swarmRef,
                 registeredAt,
+                ...(await maybeAttachMorphAnalysis(best.entity, imageBuffer)),
               },
             },
             { status: 200 },
@@ -184,6 +214,7 @@ export async function POST(request: NextRequest) {
                 similarityPercent: best.similarity,
                 legitimateOwner,
                 targetImageHash: bestHash,
+                ...(await maybeAttachMorphAnalysis(best.entity, imageBuffer)),
               },
             },
             { status: 200 },
@@ -204,7 +235,15 @@ export async function POST(request: NextRequest) {
         const { registeredAt } = parseEntityPayload(exactMatch);
         if (owner === cleanClaimer) {
           return NextResponse.json(
-            { success: true, result: { status: "ALREADY_REGISTERED", owner, registeredAt } },
+            {
+              success: true,
+              result: {
+                status: "ALREADY_REGISTERED",
+                owner,
+                registeredAt,
+                ...(await maybeAttachMorphAnalysis(exactMatch, imageBuffer)),
+              },
+            },
             { status: 200 },
           );
         } else {
@@ -216,6 +255,7 @@ export async function POST(request: NextRequest) {
                 similarityPercent: 100,
                 legitimateOwner: owner,
                 targetImageHash: fullHash,
+                ...(await maybeAttachMorphAnalysis(exactMatch, imageBuffer)),
               },
             },
             { status: 200 },
@@ -244,7 +284,15 @@ export async function POST(request: NextRequest) {
 
         if (owner === cleanClaimer) {
           return NextResponse.json(
-            { success: true, result: { status: "ALREADY_REGISTERED", owner, registeredAt } },
+            {
+              success: true,
+              result: {
+                status: "ALREADY_REGISTERED",
+                owner,
+                registeredAt,
+                ...(await maybeAttachMorphAnalysis(best.entity, imageBuffer)),
+              },
+            },
             { status: 200 },
           );
         } else {
@@ -256,6 +304,7 @@ export async function POST(request: NextRequest) {
                 similarityPercent: best.similarity,
                 legitimateOwner: owner,
                 targetImageHash: bestHash,
+                ...(await maybeAttachMorphAnalysis(best.entity, imageBuffer)),
               },
             },
             { status: 200 },
